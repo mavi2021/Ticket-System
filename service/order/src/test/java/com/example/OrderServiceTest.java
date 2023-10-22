@@ -1,22 +1,14 @@
 package com.example;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.order.dto.domain.OrderStatusReversalDTO;
-import com.example.order.dto.req.CancelTicketOrderReqDTO;
-import com.example.order.dto.req.TicketOrderCreateReqDTO;
-import com.example.order.dto.req.TicketOrderItemCreateReqDTO;
-import com.example.order.dto.req.TicketOrderPageQueryReqDTO;
+import com.example.order.dto.req.*;
 import com.example.order.dto.resp.PageResponse;
 import com.example.order.dto.resp.TicketOrderDetailRespDTO;
-import com.example.order.entity.Order;
+import com.example.order.dto.resp.TicketOrderDetailSelfRespDTO;
+import com.example.order.entity.OrderItemPassenger;
 import com.example.order.enums.OrderItemStatusEnum;
 import com.example.order.enums.OrderStatusEnum;
-import com.example.order.mapper.OrderMapper;
-import com.example.order.service.OrderItemService;
+import com.example.order.mq.event.PayResultCallbackOrderEvent;
 import com.example.order.service.OrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,11 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @create 2023/10/20 17:11
@@ -38,13 +26,8 @@ import java.util.List;
 public class OrderServiceTest {
 
     @Autowired
-    private OrderItemService orderItemService;
-
-    @Autowired
     private OrderService orderService;
 
-    @Resource
-    private OrderMapper orderMapper;
 
     @Test
     public void queryTicketOrderByOrderSn(){
@@ -98,14 +81,39 @@ public class OrderServiceTest {
         orderService.statusReversal(orderStatusReversalDTO);
     }
 
+
     @Test
-    public void testPageList(){
-        LambdaQueryWrapper<Order> orderLambdaQueryWrapper = Wrappers.lambdaQuery(Order.class).eq(Order::getUserId, "123");
-        IPage<Order> page = new Page<>(0L, 2L);
-        IPage<Order> orderIPage = orderMapper.selectPage(page, orderLambdaQueryWrapper);
-        System.out.println(orderIPage);
+    public void payCallbackOrder(){
+        PayResultCallbackOrderEvent payResultCallbackOrderEvent = PayResultCallbackOrderEvent.builder()
+                .orderSn("239cf261-281e-4583-a557-65a18d78ffab")
+                .channel(1)
+                .gmtPayment(new Date()).build();
+        orderService.payCallbackOrder(payResultCallbackOrderEvent);
+
+
     }
 
+    @Test
+    public void pageSelfTicketOrder(){
+        TicketOrderSelfPageQueryReqDTO ticketOrderSelfPageQueryReqDTO = TicketOrderSelfPageQueryReqDTO.builder()
+                .idCard("388877")
+                .idType(1)
+                .build();
+        ticketOrderSelfPageQueryReqDTO.setCurrent(1L);
+        ticketOrderSelfPageQueryReqDTO.setSize(10L);
+        PageResponse<TicketOrderDetailSelfRespDTO> ticketOrderDetailSelfRespDTOPageResponse = orderService.pageSelfTicketOrder(ticketOrderSelfPageQueryReqDTO);
+        System.out.println(ticketOrderDetailSelfRespDTOPageResponse);
+    }
+
+    @Test
+    public void getOrderDetailsByIdCard(){
+        OrderItemPassenger orderItemPassenger = OrderItemPassenger.builder()
+                .idCard("388877")
+                .idType(1)
+                .orderSn("239cf261-281e-4583-a557-65a18d78ffab").build();
+        TicketOrderDetailSelfRespDTO orderDetailsByIdCard = orderService.getOrderDetailsByIdCard(orderItemPassenger);
+        System.out.println(orderDetailsByIdCard);
+    }
 
 
 
