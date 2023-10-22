@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: order-web
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.20.10.2:8848
+      config:
+        server-addr: 172.20.10.2:8848
+        file-extension: yml
+        sharedDataids: common2.yml
+        refreshable-dataids: common2.yml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/demo?serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+server:
+  port: 8090

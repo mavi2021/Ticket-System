@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: user-dubbo-provider
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: 172.20.10.2:8848
+        server-addr: 10.17.166.178:8848
+      config:
+#        server-addr: 172.20.10.2:8848
+        server-addr: 10.17.166.178:8848
+        file-extension: yml
+        sharedDataids: common2.yml
+        refreshable-dataids: common2.yml
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/12306?serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+#management:
+#  health:
+#    elasticsearch:
+server:
+#  port: 8081
+  port: 8082
+
+#      enabled: false
