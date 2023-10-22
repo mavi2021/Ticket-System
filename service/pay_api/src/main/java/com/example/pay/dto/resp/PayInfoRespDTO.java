@@ -15,27 +15,37 @@
  * limitations under the License.
  */
 
-package com.example.order.dto.req;
+package com.example.pay.dto.resp;
 
-import com.example.common.bases.BasePageRequest;
-import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
- * 本人车票订单分页查询
+ * 支付单详情信息返回参数
  *
+ * @公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
  */
 @Data
-@Builder
-public class TicketOrderSelfPageQueryReqDTO extends BasePageRequest {
+public class PayInfoRespDTO {
 
     /**
-     * 证件类型
+     * 订单号
      */
-    private Integer idType;
+    private String orderSn;
 
     /**
-     * 证件号
+     * 支付总金额
      */
-    private String idCard;
+    private Integer totalAmount;
+
+    /**
+     * 支付状态
+     */
+    private Integer status;
+
+    /**
+     * 支付时间
+     */
+    private Date gmtPayment;
 }

@@ -8,6 +8,7 @@ import com.example.order.dto.resp.TicketOrderDetailRespDTO;
 import com.example.order.dto.req.TicketOrderPageQueryReqDTO;
 import com.example.order.dto.resp.PageResponse;
 import com.example.order.dto.resp.TicketOrderDetailSelfRespDTO;
+import com.example.order.entity.OrderItemPassenger;
 import com.example.order.mq.event.PayResultCallbackOrderEvent;
 
 /**
@@ -67,10 +68,19 @@ public interface OrderService {
     void payCallbackOrder(PayResultCallbackOrderEvent requestParam);
 
     /**
-     * 查询本人车票订单
+     * 分页查询本人车票订单
      *
      * @param requestParam 请求参数
      * @return 本人车票订单集合
      */
     PageResponse<TicketOrderDetailSelfRespDTO> pageSelfTicketOrder(TicketOrderSelfPageQueryReqDTO requestParam);
+
+    /**
+     * 根据订单和身份证查询车票订单详情
+     *
+     * @param orderItemPassenger 请求参数
+     * @return 本人车票订单集合
+     */
+    TicketOrderDetailSelfRespDTO getOrderDetailsByIdCard(OrderItemPassenger orderItemPassenger);
+
 }

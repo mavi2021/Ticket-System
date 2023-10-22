@@ -15,31 +15,25 @@
  * limitations under the License.
  */
 
-package com.example.order.mq.event;
+package com.example.pay.dto.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 支付结果回调订单服务事件
+ * 支付单回调请求参数
  *
  * @公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public final class PayResultCallbackOrderEvent {
-
-    /**
-     * id
-     */
-    private Long id;
+@Builder
+public class PayCallbackReqDTO {
 
     /**
      * 订单号
@@ -54,7 +48,7 @@ public final class PayResultCallbackOrderEvent {
     /**
      * 支付渠道
      */
-    private Integer channel;
+    private String channel;
 
     /**
      * 支付环境
@@ -72,15 +66,9 @@ public final class PayResultCallbackOrderEvent {
     private String tradeNo;
 
     /**
-     * 商户订单号
-     * 由商家自定义，64个字符以内，仅支持字母、数字、下划线且需保证在商户端不重复
-     */
-    private String orderRequestId;
-
-    /**
      * 交易总金额
      */
-    private BigDecimal totalAmount;
+    private Integer totalAmount;
 
     /**
      * 付款时间
@@ -90,10 +78,15 @@ public final class PayResultCallbackOrderEvent {
     /**
      * 支付金额
      */
-    private BigDecimal payAmount;
+    private Integer payAmount;
 
     /**
      * 支付状态
      */
-    private String status;
+    private Integer status;
+
+    /**
+     * 商户订单号
+     */
+    private String orderRequestId;
 }

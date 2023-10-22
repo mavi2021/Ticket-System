@@ -15,54 +15,38 @@
  * limitations under the License.
  */
 
-package com.example.order.mq.event;
+package com.example.pay.dto.req;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.example.pay.dto.base.AbstractPayRequest;
+import com.example.pay.enums.PayChannelEnum;
+import com.example.pay.enums.PayTradeTypeEnum;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * 支付结果回调订单服务事件
+ * 支付宝支付请求入参
  *
  * @公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
  */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public final class PayResultCallbackOrderEvent {
-
-    /**
-     * id
-     */
-    private Long id;
-
-    /**
-     * 订单号
-     */
-    private String orderSn;
+public final class AliPayRequest extends AbstractPayRequest {
 
     /**
      * 商户订单号
+     * 由商家自定义，64个字符以内，仅支持字母、数字、下划线且需保证在商户端不重复
      */
     private String outOrderSn;
 
     /**
-     * 支付渠道
+     * 订单总金额
+     * 单位为元，精确到小数点后两位，取值范围：[0.01,100000000]
      */
-    private Integer channel;
-
-    /**
-     * 支付环境
-     */
-    private String tradeType;
+    private BigDecimal totalAmount;
 
     /**
      * 订单标题
+     * 注意：不可使用特殊字符，如 /，=，& 等
      */
     private String subject;
 
@@ -71,29 +55,17 @@ public final class PayResultCallbackOrderEvent {
      */
     private String tradeNo;
 
-    /**
-     * 商户订单号
-     * 由商家自定义，64个字符以内，仅支持字母、数字、下划线且需保证在商户端不重复
-     */
-    private String orderRequestId;
+    @Override
+    public AliPayRequest getAliPayRequest() {
+        return this;
+    }
 
-    /**
-     * 交易总金额
-     */
-    private BigDecimal totalAmount;
-
-    /**
-     * 付款时间
-     */
-    private Date gmtPayment;
-
-    /**
-     * 支付金额
-     */
-    private BigDecimal payAmount;
-
-    /**
-     * 支付状态
-     */
-    private String status;
+    @Override
+    public String buildMark() {
+        String mark = PayChannelEnum.ALI_PAY.name();
+        if (getTradeType() != null) {
+            mark = PayChannelEnum.ALI_PAY.name() + "_" + PayTradeTypeEnum.findNameByCode(getTradeType());
+        }
+        return mark;
+    }
 }

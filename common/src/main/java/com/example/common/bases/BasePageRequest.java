@@ -1,6 +1,5 @@
 package com.example.common.bases;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,7 @@
 package com.example.order.service;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -107,7 +107,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public boolean closeTickOrder(CancelTicketOrderReqDTO requestParam) {
-        return false;
+        String orderSn = requestParam.getOrderSn();
+        LambdaUpdateWrapper<Order> orderLambdaUpdateWrapper = Wrappers.lambdaUpdate(Order.class).eq(Order::getOrderSn, orderSn);
+        Order updateOrder = Order.builder().status(OrderStatusEnum.CLOSED.getStatus()).build();
+        baseMapper.update(updateOrder, orderLambdaUpdateWrapper);
+
+        LambdaUpdateWrapper<OrderItem> orderItemLambdaUpdateWrapper = Wrappers.lambdaUpdate(OrderItem.class).eq(OrderItem::getOrderSn, orderSn);
+        OrderItem updateOrderItem = OrderItem.builder().status(OrderItemStatusEnum.CLOSED.getStatus()).build();
+        orderItemService.update(updateOrderItem, orderItemLambdaUpdateWrapper);
+
+        return true;
     }
 
     @Override
@@ -128,11 +137,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public void statusReversal(OrderStatusReversalDTO requestParam) {
         String orderSn = requestParam.getOrderSn();
-        LambdaUpdateWrapper<Order> orderLambdaUpdateWrapper = Wrappers.lambdaUpdate(Order.class).eq(Order::getOrderSn, orderSn);
+        LambdaUpdateWrapper<Order> orderLambdaUpdateWrapper = Wrappers.lambdaUpdate(Order.class)
+                .eq(Order::getOrderSn, orderSn);
         Order updateOrder = Order.builder().status(requestParam.getOrderStatus()).build();
         baseMapper.update(updateOrder, orderLambdaUpdateWrapper);
 
-        LambdaUpdateWrapper<OrderItem> orderItemLambdaUpdateWrapper = Wrappers.lambdaUpdate(OrderItem.class).eq(OrderItem::getOrderSn, orderSn);
+        LambdaUpdateWrapper<OrderItem> orderItemLambdaUpdateWrapper = Wrappers.lambdaUpdate(OrderItem.class)
+                .eq(OrderItem::getOrderSn, orderSn);
         OrderItem updateOrderItem = OrderItem.builder().status(requestParam.getOrderItemStatus()).build();
         orderItemService.update(updateOrderItem, orderItemLambdaUpdateWrapper);
 
@@ -140,14 +151,46 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public void payCallbackOrder(PayResultCallbackOrderEvent requestParam) {
-        Order updateOrder = Order.builder().payType(requestParam.getChannel()).payTime(requestParam.getGmtPayment()).build();
-        LambdaUpdateWrapper<Order> orderLambdaUpdateWrapper = Wrappers.lambdaUpdate(Order.class).eq(Order::getOrderSn, requestParam.getOrderSn());
+        Order updateOrder = Order.builder()
+                .payType(requestParam.getChannel())
+                .payTime(requestParam.getGmtPayment()).build();
+        LambdaUpdateWrapper<Order> orderLambdaUpdateWrapper = Wrappers.lambdaUpdate(Order.class)
+                .eq(Order::getOrderSn, requestParam.getOrderSn());
         baseMapper.update(updateOrder, orderLambdaUpdateWrapper);
     }
 
     @Override
     public PageResponse<TicketOrderDetailSelfRespDTO> pageSelfTicketOrder(TicketOrderSelfPageQueryReqDTO requestParam) {
-//        orderItemPassengerService.
-        return null;
+        LambdaQueryWrapper<OrderItemPassenger> orderItemPassengerLambdaQueryWrapper = Wrappers.lambdaQuery(OrderItemPassenger.class)
+                .eq(OrderItemPassenger::getIdType, requestParam.getIdType())
+                .eq(OrderItemPassenger::getIdCard, requestParam.getIdCard());
+        IPage<OrderItemPassenger> selfOrdersPage = new Page<>(requestParam.getCurrent(), requestParam.getSize());
+        IPage<OrderItemPassenger> selfOrdersIPage = orderItemPassengerService.page(selfOrdersPage, orderItemPassengerLambdaQueryWrapper);
+        List<TicketOrderDetailSelfRespDTO> ticketOrderDetailSelfRespDTOS = selfOrdersIPage.getRecords().stream().map(this::getOrderDetailsByIdCard).collect(Collectors.toList());
+
+        return PageResponse.<TicketOrderDetailSelfRespDTO>builder()
+                .current(selfOrdersIPage.getCurrent())
+                .size(selfOrdersIPage.getSize())
+                .total(selfOrdersIPage.getTotal())
+                .records(ticketOrderDetailSelfRespDTOS)
+                .build();
+    }
+
+    @Override
+    public TicketOrderDetailSelfRespDTO getOrderDetailsByIdCard(OrderItemPassenger orderItemPassenger) {
+        String orderSn = orderItemPassenger.getOrderSn();
+        LambdaQueryWrapper<Order> orderLambdaQueryWrapper = Wrappers.lambdaQuery(Order.class)
+                .eq(Order::getOrderSn, orderSn);
+        Order order = baseMapper.selectOne(orderLambdaQueryWrapper);
+
+        LambdaQueryWrapper<OrderItem> orderItemLambdaQueryWrapper = Wrappers.lambdaQuery(OrderItem.class)
+                .eq(OrderItem::getOrderSn, orderSn)
+                .eq(OrderItem::getIdType, orderItemPassenger.getIdType())
+                .eq(OrderItem::getIdCard, orderItemPassenger.getIdCard());
+        OrderItem orderItem = orderItemService.getOne(orderItemLambdaQueryWrapper);
+
+        TicketOrderDetailSelfRespDTO ticketOrderDetailSelfRespDTO = BeanUtil.copyProperties(order, TicketOrderDetailSelfRespDTO.class);
+        BeanUtil.copyProperties(orderItem, ticketOrderDetailSelfRespDTO, CopyOptions.create().ignoreNullValue());
+        return ticketOrderDetailSelfRespDTO;
     }
 }

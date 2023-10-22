@@ -15,27 +15,15 @@
  * limitations under the License.
  */
 
-package com.example.order.dto.req;
+package com.example.pay.dto.req;
 
-import com.example.common.bases.BasePageRequest;
-import lombok.Builder;
 import lombok.Data;
 
-/**
- * 本人车票订单分页查询
- *
- */
 @Data
-@Builder
-public class TicketOrderSelfPageQueryReqDTO extends BasePageRequest {
+public class RefundReqDTO {
 
     /**
-     * 证件类型
+     * 订单号
      */
-    private Integer idType;
-
-    /**
-     * 证件号
-     */
-    private String idCard;
+    private String orderSn;
 }

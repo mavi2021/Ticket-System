@@ -15,85 +15,64 @@
  * limitations under the License.
  */
 
-package com.example.order.mq.event;
+package com.example.pay.dto.base;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.pay.dto.req.AliPayRequest;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.UUID;
 
 /**
- * 支付结果回调订单服务事件
+ * 抽象支付入参实体
  *
  * @公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public final class PayResultCallbackOrderEvent {
+public abstract class AbstractPayRequest implements PayRequest {
 
     /**
-     * id
+     * 交易环境，H5、小程序、网站等
      */
-    private Long id;
+    @Getter
+    @Setter
+    private Integer tradeType;
 
     /**
      * 订单号
      */
+    @Getter
+    @Setter
     private String orderSn;
-
-    /**
-     * 商户订单号
-     */
-    private String outOrderSn;
 
     /**
      * 支付渠道
      */
+    @Getter
+    @Setter
     private Integer channel;
-
-    /**
-     * 支付环境
-     */
-    private String tradeType;
-
-    /**
-     * 订单标题
-     */
-    private String subject;
-
-    /**
-     * 交易凭证号
-     */
-    private String tradeNo;
 
     /**
      * 商户订单号
      * 由商家自定义，64个字符以内，仅支持字母、数字、下划线且需保证在商户端不重复
      */
-    private String orderRequestId;
+    @Getter
+    @Setter
+//    private String orderRequestId = SnowflakeIdUtil.nextIdStr();
+    private String orderRequestId = String.valueOf(UUID.randomUUID());
 
-    /**
-     * 交易总金额
-     */
-    private BigDecimal totalAmount;
 
-    /**
-     * 付款时间
-     */
-    private Date gmtPayment;
+    @Override
+    public AliPayRequest getAliPayRequest() {
+        return null;
+    }
 
-    /**
-     * 支付金额
-     */
-    private BigDecimal payAmount;
+    @Override
+    public String getOrderRequestId() {
+        return orderRequestId;
+    }
 
-    /**
-     * 支付状态
-     */
-    private String status;
+    @Override
+    public String buildMark() {
+        return null;
+    }
 }

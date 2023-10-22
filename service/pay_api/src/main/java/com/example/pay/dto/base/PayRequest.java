@@ -15,85 +15,45 @@
  * limitations under the License.
  */
 
-package com.example.order.mq.event;
+package com.example.pay.dto.base;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.pay.dto.req.AliPayRequest;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * 支付结果回调订单服务事件
+ * 支付入参接口
  *
  * @公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public final class PayResultCallbackOrderEvent {
+public interface PayRequest {
 
     /**
-     * id
+     * 获取阿里支付入参
      */
-    private Long id;
+    AliPayRequest getAliPayRequest();
 
     /**
-     * 订单号
+     * 获取订单号
      */
-    private String orderSn;
-
-    /**
-     * 商户订单号
-     */
-    private String outOrderSn;
-
-    /**
-     * 支付渠道
-     */
-    private Integer channel;
-
-    /**
-     * 支付环境
-     */
-    private String tradeType;
-
-    /**
-     * 订单标题
-     */
-    private String subject;
-
-    /**
-     * 交易凭证号
-     */
-    private String tradeNo;
+    String getOrderSn();
 
     /**
      * 商户订单号
      * 由商家自定义，64个字符以内，仅支持字母、数字、下划线且需保证在商户端不重复
+     * 默认雪花算法生成，不同支付方式如需扩展自定义重写即可
      */
-    private String orderRequestId;
+    String getOrderRequestId();
 
     /**
-     * 交易总金额
+     * 商户订单号
+     * 由商家自定义，64个字符以内，仅支持字母、数字、下划线且需保证在商户端不重复
+     * 默认雪花算法生成，不同支付方式如需扩展自定义重写即可
      */
-    private BigDecimal totalAmount;
+    BigDecimal getTotalAmount();
 
     /**
-     * 付款时间
+     * 构建查找支付策略实现类标识
      */
-    private Date gmtPayment;
-
-    /**
-     * 支付金额
-     */
-    private BigDecimal payAmount;
-
-    /**
-     * 支付状态
-     */
-    private String status;
+    String buildMark();
 }
