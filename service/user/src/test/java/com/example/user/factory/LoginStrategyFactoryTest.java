@@ -26,7 +26,7 @@ public class LoginStrategyFactoryTest {
 //                .build();
 
         UserLoginReqDTO requestParam = UserLoginReqDTO.builder()
-                .LoginType(1)
+                .LoginType(2)
                 .loginName("15086888572")
                 .build();
         Object loginStrategyByType = loginStrategyFactory.getLoginStrategy(requestParam.getLoginType());

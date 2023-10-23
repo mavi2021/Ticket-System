@@ -1,17 +1,14 @@
 package com.example.user.factory;
 
-import com.example.user.dto.req.UserLoginReqDTO;
 import com.example.user.enums.LoginStrategyEnum;
-import com.example.user.strategy.entity.BaseLoginStrategy;
+import com.example.user.strategy.login.LoginStrategy;
 import com.example.user.strategy.login.EmailLoginStrategy;
 import com.example.user.strategy.login.PhoneLoginStrategy;
 import com.example.user.strategy.login.UsernameLoginStrategy;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Field;
 
 /**
  * @create 2023/10/14 20:19
@@ -29,14 +26,17 @@ public class LoginStrategyFactory {
 //    @Getter
     private final PhoneLoginStrategy phoneLoginStrategy;
 
-    public BaseLoginStrategy getLoginStrategy(Integer loginType){
-        if(loginType.equals(LoginStrategyEnum.USERNAME.getType())) {
-            return usernameLoginStrategy;
-        }else if(loginType.equals(LoginStrategyEnum.PHONE.getType())) {
-            return phoneLoginStrategy;
-        }else {
-            return emailLoginStrategy;
-        }
+    private final ApplicationContext applicationContext;
+
+    public LoginStrategy getLoginStrategy(Integer loginType){
+        return (LoginStrategy) applicationContext.getBean(LoginStrategyEnum.findBeanNameByLoginType(loginType));
+//        if(loginType.equals(LoginStrategyEnum.USERNAME.getType())) {
+//            return usernameLoginStrategy;
+//        }else if(loginType.equals(LoginStrategyEnum.PHONE.getType())) {
+//            return phoneLoginStrategy;
+//        }else {
+//            return emailLoginStrategy;
+//        }
     }
 
 //        Object o = null;

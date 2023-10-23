@@ -2,16 +2,9 @@ package com.example.user.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.common.Log;
-import com.example.common.Result;
-import com.example.order.service.OrderService;
-import com.example.user.dto.req.UserAddReqDto;
 import com.example.user.dto.req.UserRegisterReqDTO;
 import com.example.user.dto.req.UserUpdateReqDTO;
 import com.example.user.dto.resp.UserQueryRespDTO;
@@ -20,7 +13,6 @@ import com.example.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.dubbo.config.annotation.Service;
 
-import java.util.List;
 
 /**
  * @create 2023/7/10 10:04
