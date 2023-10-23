@@ -16,21 +16,21 @@ public enum LoginStrategyEnum {
     EMAIL(2, "emailLoginStrategy");
 
     @Getter
-    private Integer type;
+    private final Integer loginType;
 
     @Getter
-    private String strategyName;
+    private final String beanName;
 
-    LoginStrategyEnum(Integer loginType, String loginStrategy) {
-        this.type = loginType;
-        this.strategyName = loginStrategy;
+    LoginStrategyEnum(Integer loginType, String beanName) {
+        this.loginType = loginType;
+        this.beanName = beanName;
     }
 
-    public static String findNameByType(Integer loginType){
+    public static String findBeanNameByLoginType(Integer loginType){
         LoginStrategyEnum[] values = LoginStrategyEnum.values();
-        LoginStrategyEnum loginStrategyEnum = Arrays.stream(values).filter(each -> Objects.deepEquals(each.type, loginType))
+        LoginStrategyEnum loginStrategyEnum = Arrays.stream(values).filter(each -> Objects.deepEquals(each.loginType, loginType))
                 .findFirst().orElse(null);
         assert loginStrategyEnum != null;
-        return loginStrategyEnum.strategyName;
+        return loginStrategyEnum.beanName;
     }
 }
