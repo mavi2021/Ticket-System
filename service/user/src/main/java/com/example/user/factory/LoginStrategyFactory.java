@@ -1,12 +1,10 @@
 package com.example.user.factory;
 
-import com.example.user.dto.req.UserLoginReqDTO;
 import com.example.user.enums.LoginStrategyEnum;
 import com.example.user.strategy.entity.BaseLoginStrategy;
 import com.example.user.strategy.login.EmailLoginStrategy;
 import com.example.user.strategy.login.PhoneLoginStrategy;
 import com.example.user.strategy.login.UsernameLoginStrategy;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,6 +18,7 @@ import java.lang.reflect.Field;
 @Component
 @Slf4j
 public class LoginStrategyFactory {
+
 //    @Getter
     private final UsernameLoginStrategy usernameLoginStrategy;
 

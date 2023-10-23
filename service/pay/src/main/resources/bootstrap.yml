@@ -1,6 +1,6 @@
 spring:
   application:
-    name: pay-dubbo-provider
+    name: user-dubbo-provider
   profiles:
     active: dev
   cloud:

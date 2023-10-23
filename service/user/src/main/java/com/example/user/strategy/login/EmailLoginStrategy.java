@@ -2,7 +2,6 @@ package com.example.user.strategy.login;
 
 import com.example.user.dto.req.UserLoginReqDTO;
 import com.example.user.service.UserMailService;
-import com.example.user.strategy.AbstractLoginStrategy;
 import com.example.user.strategy.entity.BaseLoginStrategy;
 import org.springframework.stereotype.Component;
 
