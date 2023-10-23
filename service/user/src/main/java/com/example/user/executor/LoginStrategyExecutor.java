@@ -1,9 +1,8 @@
 package com.example.user.executor;
 
 import com.example.user.dto.req.UserLoginReqDTO;
-import com.example.user.enums.LoginStrategyEnum;
 import com.example.user.factory.LoginStrategyFactory;
-import com.example.user.strategy.entity.BaseLoginStrategy;
+import com.example.user.strategy.login.LoginStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -19,7 +18,7 @@ public class LoginStrategyExecutor {
 
     public String getUsername(UserLoginReqDTO requestParam){
         Integer loginType = requestParam.getLoginType();
-        BaseLoginStrategy loginStrategy = loginStrategyFactory.getLoginStrategy(loginType);
+        LoginStrategy loginStrategy = loginStrategyFactory.getLoginStrategy(loginType);
         return loginStrategy.getUserName(requestParam);
     }
 

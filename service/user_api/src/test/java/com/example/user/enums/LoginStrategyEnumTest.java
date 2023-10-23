@@ -10,7 +10,7 @@ public class LoginStrategyEnumTest {
 
     @Test
     public void findNameByType(){
-        String nameByType = LoginStrategyEnum.findNameByType(1);
+        String nameByType = LoginStrategyEnum.findBeanNameByLoginType(1);
         System.out.println(nameByType);
     }
 }
