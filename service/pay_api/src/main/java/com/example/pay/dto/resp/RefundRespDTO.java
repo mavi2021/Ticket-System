@@ -21,4 +21,8 @@ import lombok.Data;
 
 @Data
 public class RefundRespDTO {
+    /**
+     * 支付状态
+     */
+    private Integer status;
 }

@@ -1,11 +1,15 @@
 package com.example.pay.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.pay.dto.base.PayRequest;
-import com.example.pay.dto.base.PayResponse;
+import com.example.pay.dto.base.pay.PayRequest;
+import com.example.pay.dto.base.pay.PayResponse;
+import com.example.pay.dto.base.refund.RefundRequest;
+import com.example.pay.dto.base.refund.RefundResponse;
 import com.example.pay.dto.req.PayCallbackReqDTO;
-import com.example.pay.dto.req.RefundReqDTO;
 import com.example.pay.dto.resp.PayInfoRespDTO;
 import com.example.pay.dto.resp.PayRespDTO;
 import com.example.pay.dto.resp.RefundRespDTO;
@@ -42,21 +46,39 @@ public class PayServiceImpl extends ServiceImpl<PayMapper, Pay> implements PaySe
 
     @Override
     public void callbackPay(PayCallbackReqDTO requestParam) {
-
+        LambdaUpdateWrapper<Pay> payLambdaUpdateWrapper = Wrappers.lambdaUpdate(Pay.class).eq(Pay::getOrderSn, requestParam.getOrderSn());
+        Pay updatePay =  Pay.builder()
+                .tradeNo(requestParam.getTradeNo())
+                .status(requestParam.getStatus())
+                .payAmount(requestParam.getPayAmount())
+                .gmtPayment(requestParam.getGmtPayment())
+                .build();
+        baseMapper.update(updatePay, payLambdaUpdateWrapper);
     }
 
     @Override
     public PayInfoRespDTO getPayInfoByOrderSn(String orderSn) {
-        return null;
+        LambdaQueryWrapper<Pay> payLambdaQueryWrapper = Wrappers.lambdaQuery(Pay.class)
+                .eq(Pay::getOrderSn, orderSn);
+        Pay pay = baseMapper.selectOne(payLambdaQueryWrapper);
+        return BeanUtil.copyProperties(pay, PayInfoRespDTO.class);
     }
 
     @Override
     public PayInfoRespDTO getPayInfoByPaySn(String paySn) {
-        return null;
+        LambdaQueryWrapper<Pay> payLambdaQueryWrapper = Wrappers.lambdaQuery(Pay.class)
+                .eq(Pay::getPaySn, paySn);
+        Pay pay = baseMapper.selectOne(payLambdaQueryWrapper);
+        return BeanUtil.copyProperties(pay, PayInfoRespDTO.class);
     }
 
     @Override
-    public RefundRespDTO commonRefund(RefundReqDTO requestParam) {
-        return null;
+    public RefundRespDTO commonRefund(RefundRequest requestParam) {
+        RefundResponse refundResponse = payStrategyExecutor.refund(requestParam);
+        LambdaUpdateWrapper<Pay> payLambdaUpdateWrapper = Wrappers.lambdaUpdate(Pay.class)
+                .eq(Pay::getOrderSn, requestParam.getOrderSn());
+        Pay updatePay = Pay.builder().status(refundResponse.getStatus()).build();
+        baseMapper.update(updatePay, payLambdaUpdateWrapper);
+        return BeanUtil.copyProperties(refundResponse, RefundRespDTO.class);
     }
 }

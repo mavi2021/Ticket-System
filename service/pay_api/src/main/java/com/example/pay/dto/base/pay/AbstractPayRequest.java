@@ -1,4 +1,4 @@
-package com.example.pay.dto.base;
+package com.example.pay.dto.base.pay;
 
 import lombok.Getter;
 import lombok.Setter;

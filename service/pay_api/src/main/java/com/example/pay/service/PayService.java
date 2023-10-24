@@ -1,9 +1,9 @@
 package com.example.pay.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.pay.dto.base.refund.RefundRequest;
 import com.example.pay.dto.req.PayCallbackReqDTO;
-import com.example.pay.dto.base.PayRequest;
-import com.example.pay.dto.req.RefundReqDTO;
+import com.example.pay.dto.base.pay.PayRequest;
 import com.example.pay.dto.resp.PayInfoRespDTO;
 import com.example.pay.dto.resp.PayRespDTO;
 import com.example.pay.dto.resp.RefundRespDTO;
@@ -50,6 +50,6 @@ public interface PayService extends IService<Pay> {
      * @param requestParam 退款请求参数
      * @return 退款返回详情
      */
-    RefundRespDTO commonRefund(RefundReqDTO requestParam);
+    RefundRespDTO commonRefund(RefundRequest requestParam);
 }
 

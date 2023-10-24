@@ -1,7 +1,10 @@
 package com.example.pay.strategy;
 
-import com.example.pay.dto.base.PayRequest;
-import com.example.pay.dto.base.PayResponse;
+import com.example.pay.dto.base.pay.PayRequest;
+import com.example.pay.dto.base.pay.PayResponse;
+import com.example.pay.dto.base.refund.RefundRequest;
+import com.example.pay.dto.base.refund.RefundResponse;
+import com.example.pay.enums.TradeStatusEnum;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,5 +16,11 @@ public final class WxPayStrategy extends AbstractPayStrategy{
     public PayResponse pay(PayRequest payRequest) {
         System.out.println("微信支付");
         return null;
+    }
+
+    @Override
+    public RefundResponse refund(RefundRequest refundRequest) {
+        System.out.println("微信退款");
+        return RefundResponse.builder().status(TradeStatusEnum.TRADE_CLOSED.getTradeCode()).build();
     }
 }
