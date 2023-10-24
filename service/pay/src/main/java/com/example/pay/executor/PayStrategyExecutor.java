@@ -3,6 +3,7 @@ package com.example.pay.executor;
 import com.example.pay.dto.base.PayRequest;
 import com.example.pay.dto.base.PayResponse;
 import com.example.pay.factory.PayStrategyFactory;
+import com.example.pay.strategy.PayStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,7 @@ public class PayStrategyExecutor implements AbstractPayStrategyExecutor{
 
     @Override
     public PayResponse pay(PayRequest payRequest) {
-//        payStrategyFactory.getPayStrategy(payRequest.getT)
-
-        return null;
+        PayStrategy payStrategy = payStrategyFactory.getPayStrategy(payRequest.getChannel());
+        return payStrategy.pay(payRequest);
     }
 }

@@ -17,8 +17,6 @@
 
 package com.example.pay.dto.base;
 
-import com.example.pay.dto.req.AliPayRequest;
-
 import java.math.BigDecimal;
 
 /**
@@ -29,9 +27,9 @@ import java.math.BigDecimal;
 public interface PayRequest {
 
     /**
-     * 获取阿里支付入参
+     * 获取支付渠道
      */
-    AliPayRequest getAliPayRequest();
+    Integer getChannel();
 
     /**
      * 获取订单号
@@ -52,8 +50,4 @@ public interface PayRequest {
      */
     BigDecimal getTotalAmount();
 
-    /**
-     * 构建查找支付策略实现类标识
-     */
-    String buildMark();
 }

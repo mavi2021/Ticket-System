@@ -17,7 +17,7 @@ public enum PayChannelEnum {
     WX_PAY(1, "WX_PAY", "微信", "wxPayStrategy");
 
     @Getter
-    private final Integer payType;
+    private final Integer payChannel;
 
     @Getter
     private final String name;
@@ -28,16 +28,16 @@ public enum PayChannelEnum {
     @Getter
     private final String beanName;
 
-    PayChannelEnum(Integer payType, String name, String value, String beanName) {
-        this.payType = payType;
+    PayChannelEnum(Integer payChannel, String name, String value, String beanName) {
+        this.payChannel = payChannel;
         this.name = name;
         this.value = value;
         this.beanName = beanName;
     }
 
-    public static String getBeanNameByPayType(Integer payType){
+    public static String getBeanNameByPayChannel(Integer payChannel){
        return Arrays.stream(values())
-               .filter(each-> Objects.equals(each.getPayType(), payType))
+               .filter(each-> Objects.equals(each.getPayChannel(), payChannel))
                .findFirst()
                .map(PayChannelEnum::getBeanName)
                .orElse(null);

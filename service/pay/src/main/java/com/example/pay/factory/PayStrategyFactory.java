@@ -18,6 +18,6 @@ public class PayStrategyFactory implements AbstractPayStrategyFactory {
 
     @Override
     public PayStrategy getPayStrategy(Integer payType) {
-        return (PayStrategy) applicationContext.getBean(PayChannelEnum.getBeanNameByPayType(payType));
+        return (PayStrategy) applicationContext.getBean(PayChannelEnum.getBeanNameByPayChannel(payType));
     }
 }

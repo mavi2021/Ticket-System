@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @create 2023/10/23 20:43
  */
 @Component
-public class AliPayStrategy extends AbstractPayStrategy{
+public final class AliPayStrategy extends AbstractPayStrategy{
     @Override
     public PayResponse pay(PayRequest payRequest) {
         System.out.println("支付宝");

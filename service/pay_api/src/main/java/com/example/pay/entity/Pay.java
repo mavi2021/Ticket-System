@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Data
 @Builder
-@TableName("t_pay")
+@TableName("t_pay_0")
 public class Pay extends BaseEntity {
 
     /**

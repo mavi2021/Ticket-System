@@ -9,8 +9,8 @@ import org.junit.Test;
 public class PayChannelEnumTest {
 
     @Test
-    public void getClassLocationByPayType(){
-        String classLocationByPayType = PayChannelEnum.getBeanNameByPayType(0);
+    public void getBeanNameByPayChannel(){
+        String classLocationByPayType = PayChannelEnum.getBeanNameByPayChannel(1);
         System.out.println(classLocationByPayType);
     }
 }
