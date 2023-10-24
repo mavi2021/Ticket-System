@@ -1,6 +1,8 @@
 package com.example.pay.executor;
 
+import com.example.pay.dto.base.refund.RefundRequest;
 import com.example.pay.dto.req.AliPayRequest;
+import com.example.pay.dto.req.AliRefundRequest;
 import com.example.pay.enums.PayChannelEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +30,13 @@ public class PayStrategyExecutorTest {
                 .build();
         payRequest.setChannel(PayChannelEnum.ALI_PAY.getPayChannel());
         payStrategyExecutor.pay(payRequest);
+    }
+
+    @Test
+    public void refund(){
+        AliRefundRequest refundRequest = AliRefundRequest.builder().build();
+        refundRequest.setChannel(1);
+        payStrategyExecutor.refund(refundRequest);
     }
 
 }

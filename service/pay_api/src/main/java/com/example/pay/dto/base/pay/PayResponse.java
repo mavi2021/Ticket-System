@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.example.pay.dto.base;
+package com.example.pay.dto.base.pay;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

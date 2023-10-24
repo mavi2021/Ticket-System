@@ -1,6 +1,6 @@
 package com.example.pay.dto.req;
 
-import com.example.pay.dto.base.AbstractPayRequest;
+import com.example.pay.dto.base.pay.AbstractPayRequest;
 import lombok.Builder;
 import lombok.Data;
 

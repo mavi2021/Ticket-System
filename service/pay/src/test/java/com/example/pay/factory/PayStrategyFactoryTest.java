@@ -1,7 +1,6 @@
 package com.example.pay.factory;
 
-import com.example.pay.dto.base.PayRequest;
-import com.example.pay.factory.PayStrategyFactory;
+import com.example.pay.dto.base.pay.PayRequest;
 import com.example.pay.strategy.PayStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;

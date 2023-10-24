@@ -44,6 +44,8 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     private final SeatService seatService;
     private final TrainSeatSelector trainSeatSelector;
 
+
+
     @Override
     public TicketPageQueryRespDTO pageListTicketQuery(TicketPageQueryReqDTO requestParam) {
 
@@ -158,7 +160,7 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
 
     @Override
     public PayInfoRespDTO getPayInfo(String orderSn) {
-
+        
 
         return null;
     }
