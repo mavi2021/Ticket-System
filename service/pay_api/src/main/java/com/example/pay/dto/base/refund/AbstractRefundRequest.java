@@ -1,8 +1,6 @@
 package com.example.pay.dto.base.refund;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @create 2023/10/24 21:28
