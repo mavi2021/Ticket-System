@@ -1,7 +1,6 @@
 package com.example.ticket.service;
 
 
-import cn.hutool.core.bean.copier.CopyOptions;
 import com.example.order.dto.resp.TicketOrderDetailRespDTO;
 import com.example.order.service.OrderService;
 
@@ -95,14 +94,12 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
             Map<Integer, Integer> seatQuantityMap = seatService.loadAllSeatQuantity(train.getId(),
                                                                             trainStationRelation.getDeparture(),
                                                                             trainStationRelation.getArrival());
-            List<SeatClassDTO> seatClassList = trainStationPriceList.stream().map(trainStationPrice -> {
-                return SeatClassDTO.builder()
-                            .type(trainStationPrice.getSeatType())
-                            .price(new BigDecimal(trainStationPrice.getPrice()).divide(new BigDecimal("100")))
-                            .quantity(seatQuantityMap.get(trainStationPrice.getSeatType()))
-                            .candidate(false)
-                            .build();
-            }).collect(Collectors.toList());
+            List<SeatClassDTO> seatClassList = trainStationPriceList.stream().map(trainStationPrice -> SeatClassDTO.builder()
+                        .type(trainStationPrice.getSeatType())
+                        .price(new BigDecimal(trainStationPrice.getPrice()).divide(new BigDecimal("100")))
+                        .quantity(seatQuantityMap.get(trainStationPrice.getSeatType()))
+                        .candidate(false)
+                        .build()).collect(Collectors.toList());
 
             return TicketListDTO.builder()
                     .departure(trainStationRelation.getDeparture())

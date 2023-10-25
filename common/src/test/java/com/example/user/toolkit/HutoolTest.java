@@ -1,12 +1,8 @@
 package com.example.user.toolkit;
 
 import cn.hutool.core.bean.BeanUtil;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * @create 2023/10/25 19:59
