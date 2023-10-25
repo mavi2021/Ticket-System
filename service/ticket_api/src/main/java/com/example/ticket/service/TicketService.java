@@ -22,10 +22,13 @@ import com.example.ticket.dto.remote.PayInfoRespDTO;
 import com.example.ticket.dto.req.CancelTicketOrderReqDTO;
 import com.example.ticket.dto.req.PurchaseTicketReqDTO;
 import com.example.ticket.dto.req.TicketPageQueryReqDTO;
+import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
 import com.example.ticket.dto.resp.TicketPageQueryRespDTO;
 import com.example.ticket.dto.resp.TicketPurchaseRespDTO;
 import com.example.ticket.entity.Ticket;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * 车票接口
@@ -66,6 +69,15 @@ public interface TicketService extends IService<Ticket> {
      * @return 订单号
      */
     TicketPurchaseRespDTO executePurchaseTickets(@RequestBody PurchaseTicketReqDTO requestParam);
+
+
+    /**
+     * 获取真实购票结果
+     *
+     * @param requestParam 车票购买请求参数
+     * @return 真实购票结果
+     */
+    List<TrainPurchaseTicketRespDTO> obtainActualPurchaseResult(PurchaseTicketReqDTO requestParam);
 
     /**
      * 支付单详情查询

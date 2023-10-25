@@ -2,6 +2,7 @@ package com.example.ticket.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.common.bases.BaseEntity;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @create 2023/9/24 13:39
  */
 @Data
+@Builder
 @TableName("t_train")
 public class Train extends BaseEntity {
 

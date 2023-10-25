@@ -2,13 +2,14 @@ package com.example.ticket.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.common.bases.BaseEntity;
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * @create 2023/9/21 19:32
  */
 @Data
-//@Builder
+@Builder
 @TableName("t_ticket")
 public class Ticket extends BaseEntity {
     /**

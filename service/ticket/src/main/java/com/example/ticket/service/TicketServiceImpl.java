@@ -1,6 +1,7 @@
 package com.example.ticket.service;
 
 
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.example.order.dto.resp.TicketOrderDetailRespDTO;
 import com.example.order.service.OrderService;
 
@@ -26,6 +27,7 @@ import com.example.ticket.dto.resp.TicketPurchaseRespDTO;
 import com.example.ticket.entity.*;
 import com.example.ticket.mapper.*;
 import com.example.ticket.toolkit.TimeStringComparator;
+import com.example.user.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
@@ -58,6 +60,9 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
 
     @Reference(version = "1.0.0", check = false)
     private OrderService orderService;
+
+    @Reference(version = "1.0.0", check = false)
+    private PassengerService passengerService;
 
 
     @Override
@@ -152,24 +157,35 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
 
     @Override
     public TicketPurchaseRespDTO executePurchaseTickets(PurchaseTicketReqDTO requestParam) {
-//        查询余票
-        SelectSeatDTO.builder()
-                .requestParam(requestParam)
-                .build();
-//        trainSeatSelector.selectSeats(re);
+        List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = obtainActualPurchaseResult(requestParam);
+        List<Ticket> ticketList = purchaseTicketRespDTOS.stream().map(each -> Ticket.builder()
+                .username("currentUserName")
+                .id(requestParam.getTrainId())
+//                .ticketStatus(TicketS)
+                .carriageNumber(each.getCarriageNumber())
+                .seatNumber(each.getSeatNumber())
+                .passengerId(each.getPassengerId())
+                .build()).collect(Collectors.toList());
 
-
-//        分配座席
-        Integer seatType;
-        List<PurchaseTicketPassengerDetailDTO> purchaseTicketPassengerDetails;
-//        SelectSeatDTO selectSeatDTO = SelectSeatDTO.builder()
-//                .passengerSeatDetails(purchaseTicketPassengerDetails)
-//                .seatType(seatType)
-//                .requestParam(requestParam)
-//                .build();
-//        trainSeatSelector.distributeSeats(selectSeatDTO);
-//        执行购票
         return null;
+    }
+
+    @Override
+    public List<TrainPurchaseTicketRespDTO> obtainActualPurchaseResult(PurchaseTicketReqDTO requestParam) {
+        List<PurchaseTicketPassengerDetailDTO> passengerList = requestParam.getPassengers();
+        Map<Integer, List<PurchaseTicketPassengerDetailDTO>> seatTypeMap = passengerList.stream().collect(Collectors.groupingBy(PurchaseTicketPassengerDetailDTO::getSeatType));
+        List<TrainPurchaseTicketRespDTO> actualPurchaseResult = new ArrayList<>();
+        seatTypeMap.forEach((seatType, passengerSeatDetails)->{
+            SelectSeatDTO selectSeatDTO = SelectSeatDTO.builder()
+                    .seatType(seatType)
+                    .passengerSeatDetails(passengerSeatDetails)
+                    .requestParam(requestParam).build();
+            List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = trainSeatSelector.distributeSeats(selectSeatDTO);
+            actualPurchaseResult.addAll(purchaseTicketRespDTOS);
+        });
+//        passengerService.listPassengerQueryByIds("currentUserName", pass)
+
+        return actualPurchaseResult;
     }
 
     @Override
