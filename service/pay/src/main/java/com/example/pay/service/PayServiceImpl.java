@@ -27,7 +27,7 @@ import java.util.UUID;
 /**
  * @create 2023/10/22 21:43
  */
-//@Service
+@Service
 @org.apache.dubbo.config.annotation.Service(version = "1.0.0", protocol = "dubbo")
 @RequiredArgsConstructor
 public class PayServiceImpl extends ServiceImpl<PayMapper, Pay> implements PayService{

@@ -1,6 +1,5 @@
 package com.example.pay.executor;
 
-import com.example.pay.dto.base.refund.RefundRequest;
 import com.example.pay.dto.req.AliPayRequest;
 import com.example.pay.dto.req.AliRefundRequest;
 import com.example.pay.enums.PayChannelEnum;

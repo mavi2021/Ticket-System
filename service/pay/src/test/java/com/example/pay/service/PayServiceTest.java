@@ -5,6 +5,7 @@ import com.example.pay.dto.req.AliRefundRequest;
 import com.example.pay.dto.req.PayCallbackReqDTO;
 import com.example.pay.dto.resp.PayInfoRespDTO;
 import com.example.pay.dto.resp.PayRespDTO;
+import com.example.pay.entity.Pay;
 import com.example.pay.enums.PayChannelEnum;
 import com.example.pay.enums.TradeStatusEnum;
 import org.apache.dubbo.config.annotation.Reference;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @create 2023/10/24 20:59
@@ -25,7 +27,11 @@ import java.util.Date;
 public class PayServiceTest {
 
     @Reference(version = "1.0.0")
+//    @Autowired
     private PayService payService;
+
+    @Autowired
+    private PayService payService2;
 
     @Test
     public void test(){
@@ -75,6 +81,12 @@ public class PayServiceTest {
                 .status(TradeStatusEnum.TRADE_SUCCESS.getTradeCode())
                 .build();
         payService.callbackPay(payCallbackReqDTO);
+    }
+
+    @Test
+    public void testDatabase(){
+        List<Pay> list = payService.list();
+        System.out.println(list);
     }
 
 }
