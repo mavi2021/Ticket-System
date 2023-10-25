@@ -1,5 +1,12 @@
 package com.example.ticket.service;
 
+
+import com.example.order.dto.resp.TicketOrderDetailRespDTO;
+import com.example.order.service.OrderService;
+
+import com.example.pay.service.PayService;
+
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -13,6 +20,7 @@ import com.example.ticket.dto.remote.PayInfoRespDTO;
 import com.example.ticket.dto.req.CancelTicketOrderReqDTO;
 import com.example.ticket.dto.req.PurchaseTicketReqDTO;
 import com.example.ticket.dto.req.TicketPageQueryReqDTO;
+import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
 import com.example.ticket.dto.resp.TicketPageQueryRespDTO;
 import com.example.ticket.dto.resp.TicketPurchaseRespDTO;
 import com.example.ticket.entity.*;
@@ -20,6 +28,7 @@ import com.example.ticket.mapper.*;
 import com.example.ticket.toolkit.TimeStringComparator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 
 import java.math.BigDecimal;
@@ -44,6 +53,11 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     private final SeatService seatService;
     private final TrainSeatSelector trainSeatSelector;
 
+    @Reference(version = "1.0.0", check = false)
+    private PayService payService;
+
+    @Reference(version = "1.0.0", check = false)
+    private OrderService orderService;
 
 
     @Override
@@ -160,14 +174,18 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
 
     @Override
     public PayInfoRespDTO getPayInfo(String orderSn) {
-        
-
-        return null;
+        return BeanUtil.copyProperties(payService.getPayInfoByOrderSn(orderSn), PayInfoRespDTO.class);
     }
 
     @Override
     public void cancelTicketOrder(CancelTicketOrderReqDTO requestParam) {
-
+        com.example.order.dto.req.CancelTicketOrderReqDTO cancelTicketOrderReqDTO = BeanUtil.copyProperties(requestParam, com.example.order.dto.req.CancelTicketOrderReqDTO.class);
+        boolean isSuccess = orderService.cancelTickOrder(cancelTicketOrderReqDTO);
+        if(isSuccess){
+            TicketOrderDetailRespDTO ticketOrderDetailRespDTO = orderService.queryTicketOrderByOrderSn(requestParam.getOrderSn());
+            List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = BeanUtil.copyToList(ticketOrderDetailRespDTO.getPassengerDetails(), TrainPurchaseTicketRespDTO.class);
+            seatService.unlock(String.valueOf(ticketOrderDetailRespDTO.getTrainId()), ticketOrderDetailRespDTO.getDeparture(), ticketOrderDetailRespDTO.getArrival(), purchaseTicketRespDTOS);
+        }
     }
 
 }

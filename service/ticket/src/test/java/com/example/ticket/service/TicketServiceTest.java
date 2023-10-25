@@ -1,5 +1,6 @@
 package com.example.ticket.service;
 
+import com.example.ticket.dto.remote.PayInfoRespDTO;
 import com.example.ticket.dto.req.TicketPageQueryReqDTO;
 import com.example.ticket.dto.resp.TicketPageQueryRespDTO;
 import org.junit.Test;
@@ -27,5 +28,11 @@ public class TicketServiceTest {
                 .build();
         TicketPageQueryRespDTO ticketPageQueryRespDTO = ticketService.pageListTicketQuery(requestParam);
         System.out.println(ticketPageQueryRespDTO);
+    }
+
+    @Test
+    public void getPayInfo(){
+        PayInfoRespDTO payInfo = ticketService.getPayInfo("1123123");
+        System.out.println(payInfo);
     }
 }
