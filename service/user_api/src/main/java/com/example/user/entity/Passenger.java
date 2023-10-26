@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Data
 @Builder
-@TableName("t_passenger")
+@TableName("t_passenger_0")
 public class Passenger extends BaseEntity {
     /**
      * id
