@@ -26,6 +26,7 @@ import com.example.ticket.dto.resp.TicketPurchaseRespDTO;
 import com.example.ticket.entity.*;
 import com.example.ticket.mapper.*;
 import com.example.ticket.toolkit.TimeStringComparator;
+import com.example.user.dto.resp.PassengerActualRespDTO;
 import com.example.user.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ import org.apache.dubbo.config.annotation.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -180,8 +182,20 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
             List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = trainSeatSelector.distributeSeats(selectSeatDTO);
             actualPurchaseResult.addAll(purchaseTicketRespDTOS);
         });
-//        passengerService.listPassengerQueryByIds("currentUserName", pass)
-
+        List<Long> passengerIds = actualPurchaseResult.stream().map(each-> Long.valueOf(each.getPassengerId())).collect(Collectors.toList());
+        List<PassengerActualRespDTO> passengersDetailList = passengerService.listPassengerQueryByIds("currentUserName", passengerIds);
+        Map<String, PassengerActualRespDTO> passengerActualTicketDetailMap = passengersDetailList.stream().collect(Collectors.toMap(
+                PassengerActualRespDTO::getId,
+                passengersDetail -> (PassengerActualRespDTO) Function.identity()
+        ));
+        actualPurchaseResult.forEach(each->{
+            PassengerActualRespDTO passengerDetail = passengerActualTicketDetailMap.get(each.getPassengerId());
+            each.setRealName(passengerDetail.getRealName());
+            each.setIdCard(passengerDetail.getIdCard());
+            each.setIdType(passengerDetail.getIdType());
+            each.setPhone(passengerDetail.getPhone());
+            each.setUserType(passengerDetail.getUserType());
+        });
         return actualPurchaseResult;
     }
 
