@@ -89,7 +89,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         List<TicketOrderItemCreateReqDTO> ticketOrderItemList = requestParam.getTicketOrderItems();
         List<OrderItem> orderItemList = BeanUtil.copyToList(ticketOrderItemList, OrderItem.class);
-        System.out.println(orderItemList);
         ArrayList<OrderItemPassenger> orderItemPassengerList = new ArrayList<>();
         orderItemList.forEach(each->{
             each.setTrainId(requestParam.getTrainId());

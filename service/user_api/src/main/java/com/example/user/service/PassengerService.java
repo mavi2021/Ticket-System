@@ -6,6 +6,7 @@ import com.example.user.dto.resp.PassengerActualRespDTO;
 import com.example.user.dto.resp.PassengerRespDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @create 2023/9/20 20:52
@@ -49,4 +50,5 @@ public interface PassengerService {
      * @param requestParam 移除乘车人信息
      */
     void removePassenger(PassengerRemoveReqDTO requestParam);
+
 }

@@ -4,6 +4,7 @@ import com.example.ticket.dto.domain.PurchaseTicketPassengerDetailDTO;
 import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.req.PurchaseTicketReqDTO;
 import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
+import com.example.ticket.dto.resp.SeatDistributeRespDTO;
 
 import java.util.List;
 
@@ -13,9 +14,9 @@ import java.util.List;
  */
 public interface TrainSeatSelector {
 //    List<Integer> loadRemainingSeatsCount(SelectSeatDTO requestParam);
-    List<TrainPurchaseTicketRespDTO> distributeSeats(SelectSeatDTO requestParam);
+    List<SeatDistributeRespDTO> distributeSeats(SelectSeatDTO requestParam);
 
-    List<TrainPurchaseTicketRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket);
-    List<TrainPurchaseTicketRespDTO> selectComplexSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket);
+    List<SeatDistributeRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket);
+    List<SeatDistributeRespDTO> selectComplexSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket);
 
 }

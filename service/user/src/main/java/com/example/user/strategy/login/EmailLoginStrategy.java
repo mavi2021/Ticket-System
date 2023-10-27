@@ -2,6 +2,7 @@ package com.example.user.strategy.login;
 
 import com.example.user.dto.req.UserLoginReqDTO;
 import com.example.user.service.UserMailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**

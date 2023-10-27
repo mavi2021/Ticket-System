@@ -3,10 +3,13 @@ package com.example.ticket.service;
 import com.example.common.exception.ServiceException;
 import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
+import com.example.ticket.dto.resp.SeatDistributeRespDTO;
+import com.example.ticket.dto.resp.TrainStationPriceRespDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,9 +21,8 @@ import java.util.List;
 public class TrainSeatSelectorImpl implements TrainSeatSelector{
 
     private final SeatService seatService;
-
     @Override
-    public List<TrainPurchaseTicketRespDTO> distributeSeats(SelectSeatDTO requestParam) {
+    public List<SeatDistributeRespDTO> distributeSeats(SelectSeatDTO requestParam) {
         int passengerNumbers = requestParam.getPassengerSeatDetails().size();
         Long trainId = requestParam.getRequestParam().getTrainId();
         Integer seatType = requestParam.getSeatType();
@@ -53,13 +55,14 @@ public class TrainSeatSelectorImpl implements TrainSeatSelector{
 //    }
 
     @Override
-    public List<TrainPurchaseTicketRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
+    public List<SeatDistributeRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
 
         return null;
     }
 
     @Override
-    public List<TrainPurchaseTicketRespDTO> selectComplexSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
+    public List<SeatDistributeRespDTO> selectComplexSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
+
         return null;
     }
 
