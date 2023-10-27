@@ -72,7 +72,7 @@ public class TicketOrderItemCreateReqDTO {
     /**
      * 订单金额
      */
-    private Integer amount;
+    private Integer price;
 
     /**
      * 车票类型

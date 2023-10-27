@@ -55,9 +55,9 @@ public class TrainPurchaseTicketRespDTO {
     private String phone;
 
     /**
-     * 用户类型 0：成人 1：儿童 2：学生 3：残疾军人
+     * 车票类型 0：成人票 1：儿童票 2：学生票 3：残疾军人票
      */
-    private Integer userType;
+    private Integer ticketType;
 
     /**
      * 席别类型
@@ -77,5 +77,5 @@ public class TrainPurchaseTicketRespDTO {
     /**
      * 座位金额
      */
-    private Integer amount;
+    private Integer price;
 }

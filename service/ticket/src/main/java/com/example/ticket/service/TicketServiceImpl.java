@@ -1,7 +1,8 @@
 package com.example.ticket.service;
 
 
-import com.example.order.dto.resp.TicketOrderDetailRespDTO;
+import com.example.order.dto.req.TicketOrderCreateReqDTO;
+import com.example.order.dto.req.TicketOrderItemCreateReqDTO;
 import com.example.order.service.OrderService;
 
 import com.example.pay.service.PayService;
@@ -12,6 +13,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.common.toolkit.DateUtil;
+import com.example.ticket.common.enums.SourceEnum;
+import com.example.ticket.common.enums.TicketStatusEnum;
 import com.example.ticket.dto.domain.PurchaseTicketPassengerDetailDTO;
 import com.example.ticket.dto.domain.SeatClassDTO;
 import com.example.ticket.dto.domain.SelectSeatDTO;
@@ -21,8 +24,7 @@ import com.example.ticket.dto.req.CancelTicketOrderReqDTO;
 import com.example.ticket.dto.req.PurchaseTicketReqDTO;
 import com.example.ticket.dto.req.TicketPageQueryReqDTO;
 import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
-import com.example.ticket.dto.resp.TicketPageQueryRespDTO;
-import com.example.ticket.dto.resp.TicketPurchaseRespDTO;
+import com.example.ticket.dto.resp.*;
 import com.example.ticket.entity.*;
 import com.example.ticket.mapper.*;
 import com.example.ticket.toolkit.TimeStringComparator;
@@ -32,7 +34,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.context.ApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;
@@ -47,7 +52,6 @@ import java.util.stream.Collectors;
 @org.springframework.stereotype.Service
 @Service(version = "1.0.0",protocol = "dubbo")
 public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> implements TicketService{
-
     private final StationMapper stationMapper;
     private final TrainStationRelationMapper trainStationRelationMapper;
     private final TrainMapper trainMapper;
@@ -55,6 +59,15 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     private final SeatMapper seatMapper;
     private final SeatService seatService;
     private final TrainSeatSelector trainSeatSelector;
+    private final TrainStationRelationService trainStationRelationService;
+    private final TrainService trainService;
+    private final ApplicationContext applicationContext;
+    private TicketService ticketService;
+
+    @PostConstruct
+    void initTicketService(){
+        ticketService = applicationContext.getBean(TicketService.class);
+    }
 
     @Reference(version = "1.0.0", check = false)
     private PayService payService;
@@ -155,21 +168,50 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     }
 
     @Override
+    @Transactional
     public TicketPurchaseRespDTO executePurchaseTickets(PurchaseTicketReqDTO requestParam) {
         List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = obtainActualPurchaseResult(requestParam);
+
+        TrainStationRelationRespDTO trainStationRelationRespDTO = trainStationRelationService.queryTrainStatinRelation(requestParam.getTrainId(), requestParam.getDeparture(), requestParam.getArrival());
+        Train train = trainService.getById(requestParam.getTrainId());
+        List<TicketOrderItemCreateReqDTO> ticketOrderItemList = BeanUtil.copyToList(purchaseTicketRespDTOS, TicketOrderItemCreateReqDTO.class);
+        TicketOrderCreateReqDTO ticketOrderCreateReqDTO = TicketOrderCreateReqDTO.builder()
+//                .userId()
+                .username("currentUserName")
+                .trainId(requestParam.getTrainId())
+                .departure(requestParam.getDeparture())
+                .arrival(requestParam.getArrival())
+                .source(SourceEnum.INTERNET.getCode())
+                .orderTime(new Date())
+                .ridingDate(trainStationRelationRespDTO.getArrivalTime())
+                .trainNumber(train.getTrainNumber())
+                .departureTime(trainStationRelationRespDTO.getDepartureTime())
+                .arrivalTime(trainStationRelationRespDTO.getArrivalTime())
+                .ticketOrderItems(ticketOrderItemList)
+                .build();
+        String orderSn = orderService.createTicketOrder(ticketOrderCreateReqDTO);
+
         List<Ticket> ticketList = purchaseTicketRespDTOS.stream().map(each -> Ticket.builder()
                 .username("currentUserName")
-                .id(requestParam.getTrainId())
-//                .ticketStatus(TicketS)
+                .trainId(requestParam.getTrainId())
                 .carriageNumber(each.getCarriageNumber())
                 .seatNumber(each.getSeatNumber())
                 .passengerId(each.getPassengerId())
+                .ticketStatus(TicketStatusEnum.UNPAID.getCode())
+                .orderSn(orderSn)
                 .build()).collect(Collectors.toList());
+        ticketService.saveBatch(ticketList);
 
-        return null;
+        List<TicketOrderDetailRespDTO> ticketOrderDetails = BeanUtil.copyToList(purchaseTicketRespDTOS, TicketOrderDetailRespDTO.class);
+
+        return TicketPurchaseRespDTO.builder()
+                .orderSn(orderSn)
+                .ticketOrderDetails(ticketOrderDetails)
+                .build();
     }
 
     @Override
+    @Transactional
     public List<TrainPurchaseTicketRespDTO> obtainActualPurchaseResult(PurchaseTicketReqDTO requestParam) {
         List<PurchaseTicketPassengerDetailDTO> passengerList = requestParam.getPassengers();
         Map<Integer, List<PurchaseTicketPassengerDetailDTO>> seatTypeMap = passengerList.stream().collect(Collectors.groupingBy(PurchaseTicketPassengerDetailDTO::getSeatType));
@@ -179,8 +221,9 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
                     .seatType(seatType)
                     .passengerSeatDetails(passengerSeatDetails)
                     .requestParam(requestParam).build();
-            List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = trainSeatSelector.distributeSeats(selectSeatDTO);
-            actualPurchaseResult.addAll(purchaseTicketRespDTOS);
+            List<SeatDistributeRespDTO> seatDistributeResult = trainSeatSelector.distributeSeats(selectSeatDTO);
+            List<TrainPurchaseTicketRespDTO> purchaseTicketResultGroupBySeatType = BeanUtil.copyToList(seatDistributeResult, TrainPurchaseTicketRespDTO.class);
+            actualPurchaseResult.addAll(purchaseTicketResultGroupBySeatType);
         });
         List<Long> passengerIds = actualPurchaseResult.stream().map(each-> Long.valueOf(each.getPassengerId())).collect(Collectors.toList());
         List<PassengerActualRespDTO> passengersDetailList = passengerService.listPassengerQueryByIds("currentUserName", passengerIds);
@@ -194,8 +237,9 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
             each.setIdCard(passengerDetail.getIdCard());
             each.setIdType(passengerDetail.getIdType());
             each.setPhone(passengerDetail.getPhone());
-            each.setUserType(passengerDetail.getUserType());
+            each.setTicketType(passengerDetail.getUserType());
         });
+        seatService.lockSeat(String.valueOf(requestParam.getTrainId()), requestParam.getDeparture(), requestParam.getArrival(), actualPurchaseResult);
         return actualPurchaseResult;
     }
 
@@ -205,11 +249,16 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     }
 
     @Override
+    @Transactional
     public void cancelTicketOrder(CancelTicketOrderReqDTO requestParam) {
         com.example.order.dto.req.CancelTicketOrderReqDTO cancelTicketOrderReqDTO = BeanUtil.copyProperties(requestParam, com.example.order.dto.req.CancelTicketOrderReqDTO.class);
         boolean isSuccess = orderService.cancelTickOrder(cancelTicketOrderReqDTO);
         if(isSuccess){
-            TicketOrderDetailRespDTO ticketOrderDetailRespDTO = orderService.queryTicketOrderByOrderSn(requestParam.getOrderSn());
+            LambdaQueryWrapper<Ticket> ticketLambdaQueryWrapper = Wrappers.lambdaQuery(Ticket.class)
+                    .eq(Ticket::getOrderSn, requestParam.getOrderSn());
+            ticketService.remove(ticketLambdaQueryWrapper);
+
+            com.example.order.dto.resp.TicketOrderDetailRespDTO ticketOrderDetailRespDTO = orderService.queryTicketOrderByOrderSn(requestParam.getOrderSn());
             List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = BeanUtil.copyToList(ticketOrderDetailRespDTO.getPassengerDetails(), TrainPurchaseTicketRespDTO.class);
             seatService.unlock(String.valueOf(ticketOrderDetailRespDTO.getTrainId()), ticketOrderDetailRespDTO.getDeparture(), ticketOrderDetailRespDTO.getArrival(), purchaseTicketRespDTOS);
         }

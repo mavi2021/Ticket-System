@@ -46,4 +46,10 @@ public class Ticket extends BaseEntity {
      * 车票状态
      */
     private Integer ticketStatus;
+
+    /**
+     * 相关订单
+     */
+    private String orderSn;
+
 }

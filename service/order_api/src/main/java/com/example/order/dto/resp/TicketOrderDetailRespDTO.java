@@ -17,7 +17,6 @@
 
 package com.example.order.dto.resp;
 
-import com.example.order.dto.resp.TicketOrderPassengerDetailRespDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
