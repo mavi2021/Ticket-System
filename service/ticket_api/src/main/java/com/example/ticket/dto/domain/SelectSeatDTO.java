@@ -18,6 +18,7 @@
 package com.example.ticket.dto.domain;
 
 import com.example.ticket.dto.req.PurchaseTicketReqDTO;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +41,11 @@ public final class SelectSeatDTO {
      * 座位类型
      */
     private Integer seatType;
+
+    /**
+     * 选座策略类型
+     */
+    private Integer seatSelectStrategyType;
 
     /**
      * 座位对应的乘车人集合
