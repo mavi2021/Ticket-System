@@ -18,7 +18,7 @@ public class SeatCalculateUtilTest {
                 {1, 0, 0, 0},
                 {0, 0, 0, 0}
         };
-        List<List<Integer>> consecutiveSeats = SeatCalculateUtil.getConsecutiveSeats(4, seatLayout);
+        List<List<Integer>> consecutiveSeats = SeatCalculateUtil.getConsecutiveSeats(3, seatLayout);
         System.out.println(consecutiveSeats);
     }
 

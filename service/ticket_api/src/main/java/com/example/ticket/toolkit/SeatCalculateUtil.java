@@ -1,5 +1,8 @@
 package com.example.ticket.toolkit;
 
+import cn.hutool.core.collection.ListUtil;
+import com.example.ticket.dto.resp.SeatDistributeRespDTO;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +15,9 @@ public class SeatCalculateUtil {
     public static List<List<Integer>> getConsecutiveSeats(int seatsNum, int[][] seatLayout){
         int row = seatLayout.length;
         int col = seatLayout[0].length;
+        if(seatsNum <= 0){
+            return ListUtil.empty();
+        }
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col - seatsNum + 1; j++) {
                 List<List<Integer>> res = nextMaxConsecutiveSeatsNum(seatLayout, i, j, seatsNum);
@@ -29,7 +35,7 @@ public class SeatCalculateUtil {
         List<List<Integer>> res = new ArrayList<>();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if(res.size() == seatsNum){
+                if(res.size() >= seatsNum){
                     break;
                 }
                 if(seatLayout[i][j] == 0){
@@ -59,4 +65,11 @@ public class SeatCalculateUtil {
         return res;
     }
 
+    public static int[][] convertToSeatLayout(List<String> availableSeat) {
+        return null;
+    }
+
+    public static List<SeatDistributeRespDTO> convertToActualSeatSelectResp(List<String> availableSeat) {
+        return null;
+    }
 }

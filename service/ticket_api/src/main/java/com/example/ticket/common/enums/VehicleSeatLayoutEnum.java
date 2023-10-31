@@ -106,4 +106,13 @@ public enum VehicleSeatLayoutEnum {
                 .findFirst()
                 .orElse(null);
     }
+
+    public static Integer getMaxConsecutiveSeatsCapacityByCode(Integer vehicleCode){
+        return Arrays.stream(values())
+                .filter(each->Objects.equals(each.getCode(), vehicleCode))
+                .findFirst()
+                .map(VehicleSeatLayoutEnum::getMaxConsecutiveSeatsCapacity)
+                .orElse(0);
+
+    }
 }

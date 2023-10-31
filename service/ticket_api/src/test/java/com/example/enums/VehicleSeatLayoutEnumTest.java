@@ -10,4 +10,10 @@ public class VehicleSeatLayoutEnumTest {
         VehicleSeatLayoutEnum vehicleSeatLayoutEnumByCode = VehicleSeatLayoutEnum.getVehicleSeatLayoutEnumByCode(VehicleSeatLayoutEnum.BUSINESS_CLASS.getCode());
         System.out.println(vehicleSeatLayoutEnumByCode.getRow()+" "+vehicleSeatLayoutEnumByCode.getColumn());
     }
+
+    @Test
+    public void getMaxConsecutiveSeatsCapacityByCode(){
+        Integer maxConsecutiveSeatsCapacityByCode = VehicleSeatLayoutEnum.getMaxConsecutiveSeatsCapacityByCode(VehicleSeatLayoutEnum.BUSINESS_CLASS.getCode());
+        System.out.println(maxConsecutiveSeatsCapacityByCode);
+    }
 }
