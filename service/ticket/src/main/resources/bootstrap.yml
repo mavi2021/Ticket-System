@@ -40,3 +40,7 @@ server:
 #      port: -1
 #      name: dubbo
 #      serialization: kryo
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

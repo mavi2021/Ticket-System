@@ -47,7 +47,7 @@ public class SeatServiceTest {
 
     @Test
     public void selectRemainingSeats(){
-        List<Integer> integers = seatService.selectRemainingSeats(3L, "北京", "德州", Arrays.asList("7", "8", "9", "10"));
+        List<Integer> integers = seatService.selectRemainingSeats(3L, "北京", "德州", Arrays.asList("07", "08", "09", "10"));
         System.out.println(integers);
     }
 

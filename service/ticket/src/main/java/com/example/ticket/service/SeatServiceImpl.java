@@ -88,8 +88,9 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
                 .eq(Seat::getSeatStatus, SeatStatusEnum.AVAILABLE.getCode())
                 .in(Seat::getCarriageNumber, trainCarriageList)
                 .groupBy(Seat::getCarriageNumber)
-                .select(Seat::getCarriageGroupCount);
+                .select(Seat::getCarriageNumber, Seat::getCarriageGroupCount);
         List<Seat> remainingSeats = baseMapper.selectList(remainingSeatsCountWrapper);
+        System.out.println(remainingSeats);
         return remainingSeats.stream().map(Seat::getCarriageGroupCount).collect(Collectors.toList());
     }
 

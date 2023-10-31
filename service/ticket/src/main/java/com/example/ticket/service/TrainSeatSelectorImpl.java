@@ -5,6 +5,7 @@ import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
 import com.example.ticket.dto.resp.SeatDistributeRespDTO;
 import com.example.ticket.dto.resp.TrainStationPriceRespDTO;
+import com.example.ticket.executor.SeatSelectStrategyExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import java.util.List;
 public class TrainSeatSelectorImpl implements TrainSeatSelector{
 
     private final SeatService seatService;
+    private final SeatSelectStrategyExecutor seatSelectStrategyExecutor;
     @Override
     public List<SeatDistributeRespDTO> distributeSeats(SelectSeatDTO requestParam) {
         int passengerNumbers = requestParam.getPassengerSeatDetails().size();
@@ -38,21 +40,13 @@ public class TrainSeatSelectorImpl implements TrainSeatSelector{
         if(remainingSeatsCount < passengerNumbers){
             throw new ServiceException("站点余票不足，请尝试更换座位类型或选择其它站点");
         }
-        if(passengerNumbers < 3) {
-            return selectSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
-        }else {
-            return selectComplexSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
-        }
+        return seatSelectStrategyExecutor.selectSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
+//        if(passengerNumbers < 3) {
+//            return selectSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
+//        }else {
+//            return selectComplexSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
+//        }
     }
-
-//    public List<Integer> loadRemainingSeatsCount(SelectSeatDTO requestParam) {
-//        Long trainId = requestParam.getRequestParam().getTrainId();
-//        String startStation = requestParam.getRequestParam().getDeparture();
-//        String endStation = requestParam.getRequestParam().getArrival();
-//        Integer seatType = requestParam.getSeatType();
-//        List<String> usableCarriageLists = seatService.listUsableCarriages(trainId, seatType, startStation, endStation);
-//        return seatService.selectRemainingSeats(trainId, startStation, endStation, usableCarriageLists);
-//    }
 
     @Override
     public List<SeatDistributeRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
