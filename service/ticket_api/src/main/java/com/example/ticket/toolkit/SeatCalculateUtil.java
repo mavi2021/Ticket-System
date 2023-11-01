@@ -68,8 +68,15 @@ public final class SeatCalculateUtil {
     }
 
     public static int[][] convertToSeatLayout(List<String> availableSeat) {
-
-        return null;
+        int row = 3;
+        int col = 4;
+        int[][] seatLayout = new int[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                seatLayout[i][j] = availableSeat.contains("1") ? 0 : 1;
+            }
+        }
+        return seatLayout;
     }
 
     public static List<SeatDistributeRespDTO> convertToActualSeatSelectResp(List<PurchaseTicketPassengerDetailDTO> passengerSeatDetails, Map<String, List<List<Integer>>> selectedSeatMap) {

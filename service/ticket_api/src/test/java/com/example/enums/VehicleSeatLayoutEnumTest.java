@@ -16,4 +16,10 @@ public class VehicleSeatLayoutEnumTest {
         Integer maxConsecutiveSeatsCapacityByCode = VehicleSeatLayoutEnum.getMaxConsecutiveSeatsCapacityByCode(VehicleSeatLayoutEnum.BUSINESS_CLASS.getCode());
         System.out.println(maxConsecutiveSeatsCapacityByCode);
     }
+
+    @Test
+    public void getSeatSymbolBySeatPos(){
+        String seatSymbolBySeatPos = VehicleSeatLayoutEnum.getSeatSymbolBySeatPos(0, 2);
+        System.out.println(seatSymbolBySeatPos);
+    }
 }
