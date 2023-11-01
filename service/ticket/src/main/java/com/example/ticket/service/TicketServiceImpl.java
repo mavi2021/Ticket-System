@@ -171,7 +171,7 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     @Override
     @Transactional
     public TicketPurchaseRespDTO executePurchaseTickets(PurchaseTicketReqDTO requestParam) {
-        List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = obtainActualPurchaseResult(requestParam);
+        List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = ticketService.obtainActualPurchaseResult(requestParam);
 
         TrainStationRelationRespDTO trainStationRelationRespDTO = trainStationRelationService.queryTrainStatinRelation(requestParam.getTrainId(), requestParam.getDeparture(), requestParam.getArrival());
         Train train = trainService.getById(requestParam.getTrainId());

@@ -1,7 +1,6 @@
 package com.example.ticket.strategy;
 
 import cn.hutool.core.map.MapUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.ticket.algorithm.SeatSelectAlgorithm;
 import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.resp.SeatDistributeRespDTO;
@@ -10,7 +9,6 @@ import com.example.ticket.toolkit.SeatCalculateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +29,9 @@ public class DefaultSeatSelectStrategy extends AbstractSeatSelectStrategy {
             List<String> availableSeat = seatService.listAvailableSeat(String.valueOf(requestParam.getRequestParam().getTrainId()), carriageNum, requestParam.getSeatType(), requestParam.getRequestParam().getDeparture(), requestParam.getRequestParam().getArrival());
             int[][] seatLayout = SeatCalculateUtil.convertToSeatLayout(availableSeat);
             selectedSeatMap = SeatSelectAlgorithm.selectConsecutiveSeatsOfSameCarriage(seatsNum, seatLayout, carriageNum, requestParam.getSeatType());
+            if(!selectedSeatMap.isEmpty()){
+                break;
+            }
             carriagesNumberSeatsMap.putIfAbsent(carriageNum, seatLayout);
             seatStockNumMap.putIfAbsent(carriageNum, availableSeat.size());
         }

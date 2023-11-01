@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @create 2023/10/30 16:34
  */
-public class SeatCalculateUtil {
+public final class SeatCalculateUtil {
 
     public static List<List<Integer>> getConsecutiveSeats(int seatsNum, int[][] seatLayout){
         int row = seatLayout.length;
@@ -68,6 +68,7 @@ public class SeatCalculateUtil {
     }
 
     public static int[][] convertToSeatLayout(List<String> availableSeat) {
+
         return null;
     }
 
