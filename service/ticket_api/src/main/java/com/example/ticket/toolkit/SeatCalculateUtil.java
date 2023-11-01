@@ -1,11 +1,13 @@
 package com.example.ticket.toolkit;
 
 import cn.hutool.core.collection.ListUtil;
+import com.example.ticket.dto.domain.PurchaseTicketPassengerDetailDTO;
 import com.example.ticket.dto.resp.SeatDistributeRespDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @create 2023/10/30 16:34
@@ -69,7 +71,7 @@ public class SeatCalculateUtil {
         return null;
     }
 
-    public static List<SeatDistributeRespDTO> convertToActualSeatSelectResp(List<String> availableSeat) {
+    public static List<SeatDistributeRespDTO> convertToActualSeatSelectResp(List<PurchaseTicketPassengerDetailDTO> passengerSeatDetails, Map<String, List<List<Integer>>> selectedSeatMap) {
         return null;
     }
 }

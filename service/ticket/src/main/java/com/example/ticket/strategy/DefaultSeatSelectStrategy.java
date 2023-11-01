@@ -41,14 +41,7 @@ public class DefaultSeatSelectStrategy extends AbstractSeatSelectStrategy {
         if (selectedSeatMap.isEmpty()){
             selectedSeatMap = SeatSelectAlgorithm.selectNonConsecutiveSeatsOfAllCarriages(seatsNum, carriagesNumberSeatsMap, seatStockNumMap);
         }
-        
-
-
-//        SeatCalculateUtil.getConsecutiveSeats()
-//        seatService.listAvailableSeat(requestParam.getRequestParam().getTrainId(), requestParam);
-            return null;
-
-
+        return SeatCalculateUtil.convertToActualSeatSelectResp(requestParam.getPassengerSeatDetails(), selectedSeatMap);
 
     }
 }
