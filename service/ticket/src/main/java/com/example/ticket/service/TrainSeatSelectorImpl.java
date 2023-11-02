@@ -23,6 +23,7 @@ public class TrainSeatSelectorImpl implements TrainSeatSelector{
 
     private final SeatService seatService;
     private final SeatSelectStrategyExecutor seatSelectStrategyExecutor;
+
     @Override
     public List<SeatDistributeRespDTO> distributeSeats(SelectSeatDTO requestParam) {
         int passengerNumbers = requestParam.getPassengerSeatDetails().size();

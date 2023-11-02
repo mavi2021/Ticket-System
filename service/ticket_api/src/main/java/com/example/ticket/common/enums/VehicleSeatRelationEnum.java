@@ -11,8 +11,8 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 public enum VehicleSeatRelationEnum {
-    HIGH_SPEED_RAIN(0, ListUtil.of(0, 1, 2)),
-    BULLET(1, ListUtil.of(3, 4, 5, 13)),
+    HIGH_SPEED_RAIN(0, ListUtil.of(0, 1, 2, 13)),
+    BULLET(1, ListUtil.of(1, 2, 4, 5, 13)),
     REGULAR_TRAIN(2, ListUtil.of(6, 7, 8, 13));
 
     @Getter

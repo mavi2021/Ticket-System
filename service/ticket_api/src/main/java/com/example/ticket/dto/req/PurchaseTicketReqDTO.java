@@ -56,4 +56,9 @@ public class PurchaseTicketReqDTO {
      * 到达站点
      */
     private String arrival;
+
+    /**
+     * 选座策略类型
+     */
+    private Integer seatSelectStrategyType;
 }
