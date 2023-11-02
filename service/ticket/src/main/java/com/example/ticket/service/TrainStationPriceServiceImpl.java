@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class TrainStationPriceServiceImpl extends ServiceImpl<TrainStationPriceMapper, TrainStationPrice> implements TrainStationPriceService{
     @Override
-    public TrainStationPriceRespDTO queryTrainStationPrice(SelectSeatDTO selectSeatDTO) {
+    public TrainStationPriceRespDTO queryTrainStationPrice(String trainId, String seatType, String departure, String arrival) {
         LambdaQueryWrapper<TrainStationPrice> trainStationPriceLambdaQueryWrapper = Wrappers.lambdaQuery(TrainStationPrice.class)
-                .eq(TrainStationPrice::getTrainId, selectSeatDTO.getRequestParam().getTrainId())
-                .eq(TrainStationPrice::getDeparture, selectSeatDTO.getRequestParam().getDeparture())
-                .eq(TrainStationPrice::getArrival, selectSeatDTO.getRequestParam().getArrival())
-                .eq(TrainStationPrice::getSeatType, selectSeatDTO.getSeatType());
+                .eq(TrainStationPrice::getTrainId, trainId)
+                .eq(TrainStationPrice::getSeatType, seatType)
+                .eq(TrainStationPrice::getDeparture, departure)
+                .eq(TrainStationPrice::getArrival, arrival);
         return BeanUtil.copyProperties(baseMapper.selectOne(trainStationPriceLambdaQueryWrapper), TrainStationPriceRespDTO.class);
     }
 }

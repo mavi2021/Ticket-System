@@ -1,7 +1,7 @@
 package com.example.ticket.factory;
 
 
-import com.example.ticket.common.enums.SelectStrategyEnum;
+import com.example.ticket.common.enums.SeatSelectStrategyEnum;
 import com.example.ticket.strategy.SeatSelectStrategy;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class SeatSelectStrategyFactory implements AbstractSeatSelectStrategyFact
 
     @Override
     public SeatSelectStrategy getSeatSelectStrategy(Integer type) {
-        return (SeatSelectStrategy) applicationContext.getBean(SelectStrategyEnum.getBeanNameByType(type));
+        return (SeatSelectStrategy) applicationContext.getBean(SeatSelectStrategyEnum.getBeanNameByType(type));
     }
 
 }

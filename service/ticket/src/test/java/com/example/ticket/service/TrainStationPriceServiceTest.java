@@ -34,7 +34,7 @@ public class TrainStationPriceServiceTest {
                 .seatType(0)
                 .requestParam(requestParam)
                 .passengerSeatDetails(passengerSeatDetails).build();
-        TrainStationPriceRespDTO trainStationPriceRespDTO = trainStationPriceService.queryTrainStationPrice(selectSeatDTO);
+        TrainStationPriceRespDTO trainStationPriceRespDTO = trainStationPriceService.queryTrainStationPrice("1", "0",  "北京南", "济南西");
         System.out.println(trainStationPriceRespDTO);
 
     }

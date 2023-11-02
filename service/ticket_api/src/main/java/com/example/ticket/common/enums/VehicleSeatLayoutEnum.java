@@ -127,4 +127,20 @@ public enum VehicleSeatLayoutEnum {
                 .orElse(null);
     }
 
+    public static Integer getRowByCode(Integer vehicleCode){
+        return Arrays.stream(values())
+                .filter(each->Objects.equals(each.getCode(), vehicleCode))
+                .findFirst()
+                .map(VehicleSeatLayoutEnum::getRow)
+                .orElse(0);
+    }
+
+    public static Integer getColByCode(Integer vehicleCode){
+        return Arrays.stream(values())
+                .filter(each->Objects.equals(each.getCode(), vehicleCode))
+                .findFirst()
+                .map(VehicleSeatLayoutEnum::getColumn)
+                .orElse(0);
+    }
+
 }

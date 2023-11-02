@@ -27,7 +27,7 @@ public class DefaultSeatSelectStrategy extends AbstractSeatSelectStrategy {
         int seatsNum = requestParam.getPassengerSeatDetails().size();
         for (String carriageNum : trainCarriageList) {
             List<String> availableSeat = seatService.listAvailableSeat(String.valueOf(requestParam.getRequestParam().getTrainId()), carriageNum, requestParam.getSeatType(), requestParam.getRequestParam().getDeparture(), requestParam.getRequestParam().getArrival());
-            int[][] seatLayout = SeatCalculateUtil.convertToSeatLayout(availableSeat);
+            int[][] seatLayout = SeatCalculateUtil.convertToSeatLayout(requestParam.getSeatType(), availableSeat);
             selectedSeatMap = SeatSelectAlgorithm.selectConsecutiveSeatsOfSameCarriage(seatsNum, seatLayout, carriageNum, requestParam.getSeatType());
             if(!selectedSeatMap.isEmpty()){
                 break;
@@ -42,7 +42,7 @@ public class DefaultSeatSelectStrategy extends AbstractSeatSelectStrategy {
         if (selectedSeatMap.isEmpty()){
             selectedSeatMap = SeatSelectAlgorithm.selectNonConsecutiveSeatsOfAllCarriages(seatsNum, carriagesNumberSeatsMap, seatStockNumMap);
         }
-        return SeatCalculateUtil.convertToActualSeatSelectResp(requestParam.getPassengerSeatDetails(), selectedSeatMap);
+        return SeatCalculateUtil.convertToActualSeatSelectResp(requestParam.getSeatType(), requestParam.getPrice(),requestParam.getPassengerSeatDetails(), selectedSeatMap);
 
     }
 }

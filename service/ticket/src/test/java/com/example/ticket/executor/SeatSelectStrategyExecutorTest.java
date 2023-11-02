@@ -1,6 +1,6 @@
 package com.example.ticket.executor;
 
-import com.example.ticket.common.enums.SelectStrategyEnum;
+import com.example.ticket.common.enums.SeatSelectStrategyEnum;
 import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.resp.SeatDistributeRespDTO;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class SeatSelectStrategyExecutorTest {
     @Test
     public void selectSeats(){
         SelectSeatDTO selectSeatDTO = SelectSeatDTO.builder()
-                .seatSelectStrategyType(SelectStrategyEnum.DESIGNATED.getType()).build();
+                .seatSelectStrategyType(SeatSelectStrategyEnum.DESIGNATED.getType()).build();
         List<String> trainCarriageList = new ArrayList<>();
         List<Integer> trainStationCarriageRemainingTicket = new ArrayList<>();
         List<SeatDistributeRespDTO> seatDistributeRespDTOS = seatSelectStrategyExecutor.selectSeats(selectSeatDTO, trainCarriageList, trainStationCarriageRemainingTicket);

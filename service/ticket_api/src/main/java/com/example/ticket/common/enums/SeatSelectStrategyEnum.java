@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public enum SelectStrategyEnum {
+public enum SeatSelectStrategyEnum {
 
     DEFAULT(0, "defaultSeatSelectStrategy"),
 
@@ -23,7 +23,7 @@ public enum SelectStrategyEnum {
         return Arrays.stream(values())
                 .filter(each-> Objects.equals(each.type, strategyType))
                 .findFirst()
-                .map(SelectStrategyEnum::getBeanName)
+                .map(SeatSelectStrategyEnum::getBeanName)
                 .orElse(null);
     }
 }

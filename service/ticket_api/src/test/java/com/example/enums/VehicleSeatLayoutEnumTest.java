@@ -22,4 +22,15 @@ public class VehicleSeatLayoutEnumTest {
         String seatSymbolBySeatPos = VehicleSeatLayoutEnum.getSeatSymbolBySeatPos(0, 2);
         System.out.println(seatSymbolBySeatPos);
     }
+
+    @Test
+    public void getRowByCode(){
+        Integer rowByCode = VehicleSeatLayoutEnum.getRowByCode(0);
+        System.out.println(rowByCode);
+    }
+    @Test
+    public void getColByCode(){
+        Integer colByCode = VehicleSeatLayoutEnum.getColByCode(0);
+        System.out.println(colByCode);
+    }
 }

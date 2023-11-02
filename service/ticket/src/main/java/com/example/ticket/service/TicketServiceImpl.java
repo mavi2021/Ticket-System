@@ -62,6 +62,7 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     private final TrainSeatSelector trainSeatSelector;
     private final TrainStationRelationService trainStationRelationService;
     private final TrainService trainService;
+    private final TrainStationPriceService trainStationPriceService;
     private final ApplicationContext applicationContext;
     private TicketService ticketService;
 
@@ -218,8 +219,11 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
         Map<Integer, List<PurchaseTicketPassengerDetailDTO>> seatTypeMap = passengerList.stream().collect(Collectors.groupingBy(PurchaseTicketPassengerDetailDTO::getSeatType));
         List<TrainPurchaseTicketRespDTO> actualPurchaseResult = new ArrayList<>();
         seatTypeMap.forEach((seatType, passengerSeatDetails)->{
+            TrainStationPriceRespDTO trainStationPriceRespDTO = trainStationPriceService.queryTrainStationPrice(String.valueOf(requestParam.getTrainId()), String.valueOf(seatType), requestParam.getDeparture(), requestParam.getArrival());
             SelectSeatDTO selectSeatDTO = SelectSeatDTO.builder()
                     .seatType(seatType)
+                    .price(trainStationPriceRespDTO.getPrice())
+                    .seatSelectStrategyType(requestParam.getSeatSelectStrategyType())
                     .passengerSeatDetails(passengerSeatDetails)
                     .requestParam(requestParam).build();
             List<SeatDistributeRespDTO> seatDistributeResult = trainSeatSelector.distributeSeats(selectSeatDTO);

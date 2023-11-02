@@ -43,6 +43,11 @@ public final class SelectSeatDTO {
     private Integer seatType;
 
     /**
+     * 选座价格
+     */
+    private Integer price;
+
+    /**
      * 选座策略类型
      */
     private Integer seatSelectStrategyType;

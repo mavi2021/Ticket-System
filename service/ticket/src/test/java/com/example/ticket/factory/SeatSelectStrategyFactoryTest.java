@@ -1,6 +1,6 @@
 package com.example.ticket.factory;
 
-import com.example.ticket.common.enums.SelectStrategyEnum;
+import com.example.ticket.common.enums.SeatSelectStrategyEnum;
 import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.resp.SeatDistributeRespDTO;
 import com.example.ticket.strategy.SeatSelectStrategy;
@@ -22,7 +22,7 @@ public class SeatSelectStrategyFactoryTest {
 
     @Test
     public void getSeatSelectStrategy(){
-        SeatSelectStrategy seatSelectStrategy = seatSelectStrategyFactory.getSeatSelectStrategy(SelectStrategyEnum.DESIGNATED.getType());
+        SeatSelectStrategy seatSelectStrategy = seatSelectStrategyFactory.getSeatSelectStrategy(SeatSelectStrategyEnum.DESIGNATED.getType());
         SelectSeatDTO r1 = null;
         List<String> r2 = null;
         List<Integer> r3 = null;
