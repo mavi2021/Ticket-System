@@ -3,6 +3,7 @@ package com.example.ticket.factory;
 import com.example.ticket.common.enums.SeatSelectStrategyEnum;
 import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.resp.SeatDistributeRespDTO;
+import com.example.ticket.service.SeatService;
 import com.example.ticket.strategy.SeatSelectStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,5 +29,6 @@ public class SeatSelectStrategyFactoryTest {
         List<Integer> r3 = null;
         List<SeatDistributeRespDTO> seatDistributeRespDTOS = seatSelectStrategy.selectSeats(r1, r2, r3);
         System.out.println(seatDistributeRespDTOS);
+
     }
 }
