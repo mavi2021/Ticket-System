@@ -22,7 +22,7 @@ public class PassengerServiceTest {
 
     @Test
     public void listPassengerQueryByIds(){
-        List<PassengerActualRespDTO> passengerActualRespDTOList = passengerService.listPassengerQueryByIds("libai", Arrays.asList(1L, 2L));
+        List<PassengerActualRespDTO> passengerActualRespDTOList = passengerService.listPassengerQueryByIds("currentUserName", Arrays.asList(3L, 4L, 5L));
         System.out.println(passengerActualRespDTOList);
     }
 }

@@ -3,6 +3,8 @@ package com.example.user.toolkit;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.Builder;
 import lombok.Data;
+import org.junit.Test;
+import org.springframework.boot.test.context.TestComponent;
 
 /**
  * @create 2023/10/25 19:59
@@ -33,6 +35,19 @@ public class HutoolTest {
         D d = BeanUtil.copyProperties(c, D.class);
         System.out.println(d);
     }
+
+    @Test
+    public void testBeanCopyProperties(){
+        C c = C.builder()
+                .id(1)
+                .name("XIAOXIAO")
+                .home("123")
+                .hobbies("basketball").build();
+        D d = new D();
+        BeanUtil.copyProperties(c, d);
+        System.out.println(d);
+    }
+
 }
 @Builder
 @Data

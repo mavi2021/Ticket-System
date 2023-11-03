@@ -55,9 +55,9 @@ public class TrainPurchaseTicketRespDTO {
     private String phone;
 
     /**
-     * 车票类型 0：成人票 1：儿童票 2：学生票 3：残疾军人票
+     * 车票优惠类型 0：成人票 1：儿童票 2：学生票 3：残疾军人票
      */
-    private Integer ticketType;
+    private Integer discountType;
 
     /**
      * 席别类型

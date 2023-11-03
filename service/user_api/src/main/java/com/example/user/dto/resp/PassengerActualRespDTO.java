@@ -37,9 +37,9 @@ public class PassengerActualRespDTO {
     private String idCard;
 
     /**
-     * 用户类型
+     * 优惠类型
      */
-    private Integer userType;
+    private Integer discountType;
 
     /**
      * 手机号

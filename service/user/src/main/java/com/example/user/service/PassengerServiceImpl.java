@@ -54,22 +54,13 @@ public class PassengerServiceImpl extends ServiceImpl<PassengerMapper, Passenger
         }).collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public List<PassengerActualRespDTO> listPassengerQueryByIds(String username, List<Long> ids) {
         LambdaQueryWrapper<Passenger> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Passenger::getUsername,username);
         List<Passenger> actualUserPassengerListStr = baseMapper.selectList(queryWrapper);
         System.out.println(actualUserPassengerListStr);
-        return actualUserPassengerListStr.stream()
-                .filter(passenger-> ids.contains(passenger.getId()))
-                .map(actualUserPassenger->{
-//                     new PassengerActualRespDTO();
-//                    CopyOptions options = CopyOptions.create()
-//                            .setIgnoreNullValue(true)  // 忽略源对象属性为空的情况
-//                            .setIgnoreError(true);     // 忽略复制过程中出现的错误
-                    return BeanUtil.copyProperties(actualUserPassenger, PassengerActualRespDTO.class);
-                }).collect(Collectors.toList());
+        return BeanUtil.copyToList(actualUserPassengerListStr, PassengerActualRespDTO.class);
     }
 
     @Transactional

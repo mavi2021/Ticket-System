@@ -173,6 +173,7 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
     @Transactional
     public TicketPurchaseRespDTO executePurchaseTickets(PurchaseTicketReqDTO requestParam) {
         List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = ticketService.obtainActualPurchaseResult(requestParam);
+        seatService.lockSeat(String.valueOf(requestParam.getTrainId()), requestParam.getDeparture(), requestParam.getArrival(), purchaseTicketRespDTOS);
 
         TrainStationRelationRespDTO trainStationRelationRespDTO = trainStationRelationService.queryTrainStatinRelation(requestParam.getTrainId(), requestParam.getDeparture(), requestParam.getArrival());
         Train train = trainService.getById(requestParam.getTrainId());
@@ -238,13 +239,8 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
         ));
         actualPurchaseResult.forEach(each->{
             PassengerActualRespDTO passengerDetail = passengerActualTicketDetailMap.get(each.getPassengerId());
-            each.setRealName(passengerDetail.getRealName());
-            each.setIdCard(passengerDetail.getIdCard());
-            each.setIdType(passengerDetail.getIdType());
-            each.setPhone(passengerDetail.getPhone());
-            each.setTicketType(passengerDetail.getUserType());
+            BeanUtil.copyProperties(passengerDetail, each);
         });
-        seatService.lockSeat(String.valueOf(requestParam.getTrainId()), requestParam.getDeparture(), requestParam.getArrival(), actualPurchaseResult);
         return actualPurchaseResult;
     }
 

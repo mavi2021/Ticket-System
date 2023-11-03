@@ -42,24 +42,6 @@ public class TrainSeatSelectorImpl implements TrainSeatSelector{
             throw new ServiceException("站点余票不足，请尝试更换座位类型或选择其它站点");
         }
         return seatSelectStrategyExecutor.selectSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
-//        if(passengerNumbers < 3) {
-//            return selectSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
-//        }else {
-//            return selectComplexSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
-//        }
     }
-
-    @Override
-    public List<SeatDistributeRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
-
-        return null;
-    }
-
-    @Override
-    public List<SeatDistributeRespDTO> selectComplexSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
-
-        return null;
-    }
-
 
 }

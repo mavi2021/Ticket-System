@@ -13,10 +13,7 @@ import java.util.List;
  * 列车坐席选择器接口
  */
 public interface TrainSeatSelector {
-//    List<Integer> loadRemainingSeatsCount(SelectSeatDTO requestParam);
-    List<SeatDistributeRespDTO> distributeSeats(SelectSeatDTO requestParam);
 
-    List<SeatDistributeRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket);
-    List<SeatDistributeRespDTO> selectComplexSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket);
+    List<SeatDistributeRespDTO> distributeSeats(SelectSeatDTO requestParam);
 
 }

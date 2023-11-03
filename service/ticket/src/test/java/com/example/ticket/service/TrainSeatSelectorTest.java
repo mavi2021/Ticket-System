@@ -1,4 +1,4 @@
-package com.example.ticket.executor;
+package com.example.ticket.service;
 
 import com.example.ticket.common.enums.SeatSelectStrategyEnum;
 import com.example.ticket.common.enums.VehicleSeatTypeEnum;
@@ -6,7 +6,6 @@ import com.example.ticket.dto.domain.PurchaseTicketPassengerDetailDTO;
 import com.example.ticket.dto.domain.SelectSeatDTO;
 import com.example.ticket.dto.req.PurchaseTicketReqDTO;
 import com.example.ticket.dto.resp.SeatDistributeRespDTO;
-import com.example.ticket.service.SeatService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,19 +17,18 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class SeatSelectStrategyExecutorTest {
+public class TrainSeatSelectorTest {
 
     @Resource
-    private SeatSelectStrategyExecutor seatSelectStrategyExecutor;
-
-    @Resource
-    private SeatService seatService;
+    private TrainSeatSelector trainSeatSelector;
 
     @Test
-    public void selectSeats(){
+    public void distributeSeats(){
+
         String startStation = "北京";
         String endStation = "德州";
         Long trainId = 3L;
+        Integer seatSelectStrategyType = SeatSelectStrategyEnum.DEFAULT.getType();
         Integer seatType = VehicleSeatTypeEnum.BUSINESS_CLASS.getCode();
 
         List<PurchaseTicketPassengerDetailDTO> passengerSeatDetails = new ArrayList<>();
@@ -54,26 +52,20 @@ public class SeatSelectStrategyExecutorTest {
         PurchaseTicketReqDTO purchaseTicketReqDTO = PurchaseTicketReqDTO.builder()
                 .chooseSeats(null)
                 .passengers(passengerSeatDetails)
-                .seatSelectStrategyType(SeatSelectStrategyEnum.DEFAULT.getType())
+                .seatSelectStrategyType(seatSelectStrategyType)
                 .trainId(trainId)
                 .departure(startStation)
                 .arrival(endStation).build();
 
         SelectSeatDTO requestParam = SelectSeatDTO.builder()
-                .seatType(seatType)
-                .seatSelectStrategyType(SeatSelectStrategyEnum.DEFAULT.getType())
+                .requestParam(purchaseTicketReqDTO)
                 .price(7500)
                 .passengerSeatDetails(passengerSeatDetails)
-                .requestParam(purchaseTicketReqDTO)
-                .build();
+                .seatSelectStrategyType(seatSelectStrategyType)
+                .seatType(seatType).build();
 
-        List<String> trainCarriageList = seatService.listUsableCarriages(
-                trainId, seatType, startStation, endStation);
-        List<Integer> trainStationCarriageRemainingTicket  = seatService.selectRemainingSeats(
-                trainId, startStation, endStation, trainCarriageList);
-        List<SeatDistributeRespDTO> seatDistributeRespDTOS = seatSelectStrategyExecutor.selectSeats(requestParam, trainCarriageList, trainStationCarriageRemainingTicket);
+        List<SeatDistributeRespDTO> seatDistributeRespDTOS = trainSeatSelector.distributeSeats(requestParam);
         System.out.println(seatDistributeRespDTOS);
+
     }
-
-
 }
