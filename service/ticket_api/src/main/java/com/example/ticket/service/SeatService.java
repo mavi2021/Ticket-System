@@ -7,10 +7,12 @@ import com.example.ticket.entity.Seat;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @create 2023/9/25 21:40
- */
 public interface SeatService extends IService<Seat> {
+
+    /**
+     * 查询坐席 ID
+     */
+    String querySeatId(String trainId, String departure, String arrival, String carriageNum, String SeatNumber);
 
     /**
      * 查询所有坐席类型的余票
@@ -18,9 +20,9 @@ public interface SeatService extends IService<Seat> {
      * @param trainId   列车 ID
      * @param departure 出发站
      * @param arrival   到达站
-     * @return
+     * @return  Map<Integer, Integer>
      */
-    Map<Integer, Integer> loadAllSeatQuantity(Long trainId, String departure, String arrival);
+    Map<Integer, Integer> loadAllSeatQuantity(String trainId, String departure, String arrival);
 
     /**
      * 查询对应坐席类型的余票
@@ -29,9 +31,9 @@ public interface SeatService extends IService<Seat> {
      * @param seatType  座席类型
      * @param departure    出发站
      * @param arrival      到达站
-     * @return
+     * @return  Integer
      */
-    Integer loadSeatQuantityBySeatType(Long trainId, Integer seatType, String departure, String arrival);
+    Integer loadSeatQuantityBySeatType(String trainId, Integer seatType, String departure, String arrival);
 
     /**
      * 获取列车车厢中可用的座位集合
@@ -52,9 +54,9 @@ public interface SeatService extends IService<Seat> {
      * @param startStation  出发站
      * @param endStation    到达站
      * @param trainCarriageList    车厢列表
-     * @return
+     * @return  余票数量
      */
-    List<Integer> selectRemainingSeats(Long trainId, String startStation, String endStation, List<String> trainCarriageList);
+    List<Integer> selectRemainingSeats(String trainId, String startStation, String endStation, List<String> trainCarriageList);
 
 
     /**
@@ -66,7 +68,7 @@ public interface SeatService extends IService<Seat> {
      * @param endStation      到达站
      * @return 车厢号集合
      */
-    List<String> listUsableCarriages(Long trainId, Integer seatType, String startStation, String endStation);
+    List<String> listUsableCarriages(String trainId, Integer seatType, String startStation, String endStation);
 
 
 

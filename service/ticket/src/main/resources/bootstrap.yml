@@ -18,7 +18,8 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.137.18.250:3306/12306?serverTimezone=Asia/Shanghai&useSSL=false
+#    url: jdbc:mysql://8.137.18.250:3306/12306?serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/12306?serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: 123456
 #management:

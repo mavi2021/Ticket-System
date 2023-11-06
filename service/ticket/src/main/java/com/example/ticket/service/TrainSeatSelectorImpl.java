@@ -13,9 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @create 2023/10/2 13:57
- */
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -27,7 +24,7 @@ public class TrainSeatSelectorImpl implements TrainSeatSelector{
     @Override
     public List<SeatDistributeRespDTO> distributeSeats(SelectSeatDTO requestParam) {
         int passengerNumbers = requestParam.getPassengerSeatDetails().size();
-        Long trainId = requestParam.getRequestParam().getTrainId();
+        String trainId = requestParam.getRequestParam().getTrainId();
         Integer seatType = requestParam.getSeatType();
         String startStation = requestParam.getRequestParam().getDeparture();
         String endStation = requestParam.getRequestParam().getArrival();

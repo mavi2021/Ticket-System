@@ -20,7 +20,6 @@ public class DefaultSeatSelectStrategy extends AbstractSeatSelectStrategy {
 
     @Override
     public List<SeatDistributeRespDTO> selectSeats(SelectSeatDTO requestParam, List<String> trainCarriageList, List<Integer> trainStationCarriageRemainingTicket) {
-        System.out.println("DefaultSeatSelectStrategy");
         Map<String, List<List<Integer>>> selectedSeatMap = MapUtil.newHashMap();
         Map<String, int[][]> carriagesNumberSeatsMap = MapUtil.newHashMap();
         Map<String, Integer> seatStockNumMap = MapUtil.newHashMap();

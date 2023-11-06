@@ -3,9 +3,6 @@ package com.example.ticket.common.enums;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @create 2023/10/27 19:52
- */
 public enum TicketStatusEnum {
 
     /**
@@ -19,24 +16,29 @@ public enum TicketStatusEnum {
     PAID(1),
 
     /**
+     * 检票中
+     */
+    CHECKING(2),
+
+    /**
      * 已进站
      */
-    BOARDED(2),
+    BOARDED(3),
 
     /**
      * 已改签
      */
-    CHANGED(3),
+    CHANGED(4),
 
     /**
      * 已退票
      */
-    REFUNDED(4),
+    REFUNDED(5),
 
     /**
      * 已取消
      */
-    CLOSED(5);
+    CLOSED(6);
 
     @Getter
     private final Integer code;

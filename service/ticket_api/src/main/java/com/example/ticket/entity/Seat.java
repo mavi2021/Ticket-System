@@ -9,9 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @create 2023/9/25 21:38
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -47,12 +44,12 @@ public class Seat extends BaseEntity {
     /**
      * 起始站
      */
-    private String startStation;
+    private String departure;
 
     /**
      * 终点站
      */
-    private String endStation;
+    private String arrival;
 
     /**
      * 座位状态

@@ -13,9 +13,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @create 2023/10/27 22:23
- */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class TrainStationPriceServiceTest {
@@ -26,7 +23,7 @@ public class TrainStationPriceServiceTest {
     @Test
     public void queryTrainStationPrice(){
         PurchaseTicketReqDTO requestParam = PurchaseTicketReqDTO.builder()
-                .trainId(1L)
+                .trainId("1")
                 .departure("北京南")
                 .arrival("济南西").build();
         List<PurchaseTicketPassengerDetailDTO> passengerSeatDetails = new ArrayList<>();

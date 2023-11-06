@@ -27,7 +27,7 @@ public class TrainSeatSelectorTest {
 
         String startStation = "北京";
         String endStation = "德州";
-        Long trainId = 3L;
+        String  trainId = "3";
         Integer seatSelectStrategyType = SeatSelectStrategyEnum.DEFAULT.getType();
         Integer seatType = VehicleSeatTypeEnum.BUSINESS_CLASS.getCode();
 
