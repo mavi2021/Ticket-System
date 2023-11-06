@@ -18,9 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-/**
- * @create 2023/10/14 16:38
- */
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
 

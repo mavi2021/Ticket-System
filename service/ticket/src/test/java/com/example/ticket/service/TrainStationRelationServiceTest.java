@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * @create 2023/10/27 22:17
- */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class TrainStationRelationServiceTest {
@@ -19,7 +16,7 @@ public class TrainStationRelationServiceTest {
 
     @Test
     public void queryTrainStationPrice(){
-        TrainStationRelationRespDTO trainStationRelationRespDTO = trainStationRelationService.queryTrainStatinRelation(1L, "北京南", "济南西");
+        TrainStationRelationRespDTO trainStationRelationRespDTO = trainStationRelationService.queryTrainStatinRelation("3", "北京南", "济南西");
         System.out.println(trainStationRelationRespDTO);
-    };
+    }
 }

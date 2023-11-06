@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @create 2023/9/25 21:42
- */
 @Slf4j
 @RequiredArgsConstructor
 @org.springframework.stereotype.Service
@@ -32,22 +29,34 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
     private final TrainMapper trainMapper;
     private final TrainStationService trainStationService;
 
+    @Deprecated
     @Override
-    public Map<Integer, Integer> loadAllSeatQuantity(Long trainId, String departure, String arrival) {
+    public String querySeatId(String trainId, String departure, String arrival, String carriageNum, String seatNumber) {
+        LambdaQueryWrapper<Seat> seatLambdaQueryWrapper = Wrappers.lambdaQuery(Seat.class)
+                .eq(Seat::getTrainId, trainId)
+                .eq(Seat::getDeparture, departure)
+                .eq(Seat::getArrival, arrival)
+                .eq(Seat::getCarriageNumber, carriageNum)
+                .eq(Seat::getSeatNumber, seatNumber);
+        return String.valueOf(baseMapper.selectOne(seatLambdaQueryWrapper).getId());
+    }
+
+    @Override
+    public Map<Integer, Integer> loadAllSeatQuantity(String trainId, String departure, String arrival) {
         Train train = trainMapper.selectById(trainId);
         List<Integer> seatTypes = VehicleSeatRelationEnum.getSeatTypesByType(train.getTrainType());
         return seatTypes.stream().collect(Collectors.toMap(
                 type -> type,
-                type -> loadSeatQuantityBySeatType(train.getId(), type, departure, arrival)));
+                type -> loadSeatQuantityBySeatType(String.valueOf(train.getId()), type, departure, arrival)));
     }
 
     @Override
-    public Integer loadSeatQuantityBySeatType(Long trainId, Integer seatType, String departure, String arrival) {
+    public Integer loadSeatQuantityBySeatType(String  trainId, Integer seatType, String departure, String arrival) {
         LambdaQueryWrapper<Seat> queryWrapper = Wrappers.lambdaQuery(Seat.class)
                 .eq(Seat::getTrainId, trainId)
                 .eq(Seat::getSeatType, seatType)
-                .eq(Seat::getStartStation, departure)
-                .eq(Seat::getEndStation, arrival)
+                .eq(Seat::getDeparture, departure)
+                .eq(Seat::getArrival, arrival)
                 .eq(Seat::getSeatStatus, SeatStatusEnum.AVAILABLE.getCode());
         return Math.toIntExact(baseMapper.selectCount(queryWrapper));
     }
@@ -58,8 +67,8 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
                 .eq(Seat::getTrainId, trainId)
                 .eq(Seat::getCarriageNumber, carriageNumber)
                 .eq(Seat::getSeatType, seatType)
-                .eq(Seat::getStartStation, departure)
-                .eq(Seat::getEndStation, arrival)
+                .eq(Seat::getDeparture, departure)
+                .eq(Seat::getArrival, arrival)
                 .eq(Seat::getSeatStatus, SeatStatusEnum.AVAILABLE.getCode());
 //                .select(Seat::getSeatNumber);
         List<Seat> seatsList = baseMapper.selectList(seatLambdaQueryWrapper);
@@ -67,12 +76,12 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
     }
 
     @Override
-    public List<String> listUsableCarriages(Long trainId, Integer seatType, String startStation, String endStation) {
+    public List<String> listUsableCarriages(String trainId, Integer seatType, String startStation, String endStation) {
         LambdaQueryWrapper<Seat> carriageLambdaQueryWrapper = Wrappers.lambdaQuery(Seat.class)
                 .eq(Seat::getTrainId, trainId)
                 .eq(Seat::getSeatType, seatType)
-                .eq(Seat::getStartStation, startStation)
-                .eq(Seat::getEndStation, endStation)
+                .eq(Seat::getDeparture, startStation)
+                .eq(Seat::getArrival, endStation)
                 .eq(Seat::getSeatStatus, SeatStatusEnum.AVAILABLE.getCode())
                 .select(Seat::getCarriageNumber);
         List<Seat> carriageLists = baseMapper.selectList(carriageLambdaQueryWrapper);
@@ -80,11 +89,11 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
     }
 
     @Override
-    public  List<Integer> selectRemainingSeats(Long trainId, String startStation, String endStation, List<String> trainCarriageList) {
+    public  List<Integer> selectRemainingSeats(String trainId, String startStation, String endStation, List<String> trainCarriageList) {
         LambdaQueryWrapper<Seat> remainingSeatsCountWrapper = Wrappers.lambdaQuery(Seat.class)
                 .eq(Seat::getTrainId, trainId)
-                .eq(Seat::getStartStation, startStation)
-                .eq(Seat::getEndStation, endStation)
+                .eq(Seat::getDeparture, startStation)
+                .eq(Seat::getArrival, endStation)
                 .eq(Seat::getSeatStatus, SeatStatusEnum.AVAILABLE.getCode())
                 .in(Seat::getCarriageNumber, trainCarriageList)
                 .groupBy(Seat::getCarriageNumber)
@@ -101,8 +110,8 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
             routeList.forEach(item ->{
                 LambdaUpdateWrapper<Seat> seatLambdaUpdateWrapper = Wrappers.lambdaUpdate(Seat.class)
                         .eq(Seat::getTrainId, trainId)
-                        .eq(Seat::getStartStation, item.getStartStation())
-                        .eq(Seat::getEndStation, item.getEndStation())
+                        .eq(Seat::getDeparture, item.getStartStation())
+                        .eq(Seat::getArrival, item.getEndStation())
                         .eq(Seat::getCarriageNumber, each.getCarriageNumber())
                         .eq(Seat::getSeatNumber, each.getSeatNumber());
                 Seat updateSeat = Seat.builder()
@@ -116,20 +125,18 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
     @Override
     public void unlock(String trainId, String departure, String arrival, List<TrainPurchaseTicketRespDTO> trainPurchaseTicketResults) {
         List<Route> routeList = trainStationService.listTakeoutTrainStationRoute(trainId, departure, arrival);
-        trainPurchaseTicketResults.forEach(each->{
-            routeList.forEach(item ->{
-                LambdaUpdateWrapper<Seat> seatLambdaUpdateWrapper = Wrappers.lambdaUpdate(Seat.class)
-                        .eq(Seat::getTrainId, trainId)
-                        .eq(Seat::getStartStation, item.getStartStation())
-                        .eq(Seat::getEndStation, item.getEndStation())
-                        .eq(Seat::getCarriageNumber, each.getCarriageNumber())
-                        .eq(Seat::getSeatNumber, each.getSeatNumber());
-                Seat updateSeat = Seat.builder()
-                        .seatStatus(SeatStatusEnum.AVAILABLE.getCode())
-                        .build();
-                baseMapper.update(updateSeat, seatLambdaUpdateWrapper);
-            });
-        });
+        trainPurchaseTicketResults.forEach(each-> routeList.forEach(item ->{
+            LambdaUpdateWrapper<Seat> seatLambdaUpdateWrapper = Wrappers.lambdaUpdate(Seat.class)
+                    .eq(Seat::getTrainId, trainId)
+                    .eq(Seat::getDeparture, item.getStartStation())
+                    .eq(Seat::getArrival, item.getEndStation())
+                    .eq(Seat::getCarriageNumber, each.getCarriageNumber())
+                    .eq(Seat::getSeatNumber, each.getSeatNumber());
+            Seat updateSeat = Seat.builder()
+                    .seatStatus(SeatStatusEnum.AVAILABLE.getCode())
+                    .build();
+            baseMapper.update(updateSeat, seatLambdaUpdateWrapper);
+        }));
     }
 
 }

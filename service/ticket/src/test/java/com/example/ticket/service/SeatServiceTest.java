@@ -11,9 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @create 2023/10/16 20:35
- */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class SeatServiceTest {
@@ -22,14 +19,20 @@ public class SeatServiceTest {
     private SeatService seatService;
 
     @Test
+    public void querySeatID(){
+        String s = seatService.querySeatId("3", "北京", "德州", "01", "01A");
+        System.out.println(s);
+    }
+
+    @Test
     public void loadAllSeatQuantity(){
-        Map<Integer, Integer> integerIntegerMap = seatService.loadAllSeatQuantity(3L, "北京", "德州");
+        Map<Integer, Integer> integerIntegerMap = seatService.loadAllSeatQuantity("3", "北京", "德州");
         System.out.println(integerIntegerMap);
     }
 
     @Test
     public void loadSeatQuantityBySeatType(){
-        Integer integer = seatService.loadSeatQuantityBySeatType(3L, 1, "北京", "德州");
+        Integer integer = seatService.loadSeatQuantityBySeatType("3", 1, "北京", "德州");
         System.out.println(integer);
     }
 
@@ -41,13 +44,13 @@ public class SeatServiceTest {
 
     @Test
     public void listUsableCarriages(){
-        List<String> strings = seatService.listUsableCarriages(3L, 1, "北京", "德州");
+        List<String> strings = seatService.listUsableCarriages("3", 1, "北京", "德州");
         System.out.println(strings);
     }
 
     @Test
     public void selectRemainingSeats(){
-        List<Integer> integers = seatService.selectRemainingSeats(3L, "北京", "德州", Arrays.asList("07", "08", "09", "10"));
+        List<Integer> integers = seatService.selectRemainingSeats("3", "北京", "德州", Arrays.asList("07", "08", "09", "10"));
         System.out.println(integers);
     }
 

@@ -25,13 +25,13 @@ public class AppTest
 
     @Test
     public void testLoadSeatQuantityByTrainType(){
-        Integer stringStringMap = service.loadSeatQuantityBySeatType(3L,0, "北京", "德州");
+        Integer stringStringMap = service.loadSeatQuantityBySeatType("3",0, "北京", "德州");
         System.out.println(stringStringMap);
     }
 
     @Test
     public void test(){
-        Map<Integer, Integer> stringStringMap = service.loadAllSeatQuantity(3L, "北京", "杭州");
+        Map<Integer, Integer> stringStringMap = service.loadAllSeatQuantity("3", "北京", "杭州");
         System.out.println(stringStringMap);
     }
 

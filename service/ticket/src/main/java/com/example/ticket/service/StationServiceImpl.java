@@ -6,16 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ticket.dto.resp.StationQueryRespDTO;
 import com.example.ticket.entity.Station;
 import com.example.ticket.mapper.StationMapper;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @create 2023/10/16 13:17
- */
 @Service
 public class StationServiceImpl extends ServiceImpl<StationMapper, Station> implements StationService {
+
     @Override
     public List<StationQueryRespDTO> listAllStation() {
         List<Station> trainStationList = baseMapper.selectList(Wrappers.emptyWrapper());

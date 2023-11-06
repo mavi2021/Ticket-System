@@ -25,8 +25,6 @@ import java.util.List;
 
 /**
  * 车票订单创建请求参数
- *
- * @公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
  */
 @Data
 @Builder
@@ -45,7 +43,7 @@ public class TicketOrderCreateReqDTO {
     /**
      * 车次 ID
      */
-    private Long trainId;
+    private String trainId;
 
     /**
      * 出发站点

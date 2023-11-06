@@ -3,12 +3,10 @@ package com.example.user.toolkit;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import org.junit.Test;
 import org.springframework.boot.test.context.TestComponent;
 
-/**
- * @create 2023/10/25 19:59
- */
 public class HutoolTest {
     @Builder
     @Data
@@ -48,10 +46,18 @@ public class HutoolTest {
         System.out.println(d);
     }
 
+    @Test
+    public void testBeanUtilEmpty(){
+        B b = B.builder().build();
+        boolean empty = BeanUtil.isEmpty(b.getId());
+        System.out.println(empty);
+    }
+
 }
 @Builder
 @Data
 class B{
+    @Getter
     private Integer id;
     private String name;
     private String home;

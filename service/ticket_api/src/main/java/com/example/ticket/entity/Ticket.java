@@ -5,42 +5,42 @@ import com.example.common.bases.BaseEntity;
 import lombok.Builder;
 import lombok.Data;
 
-/**
- * @create 2023/9/21 19:32
- */
+import java.util.Date;
+
 @Data
 @Builder
 @TableName("t_ticket")
 public class Ticket extends BaseEntity {
+
     /**
-     * id
+     * 车票 ID
      */
     private Long id;
 
     /**
-     * 用户名
+     * 列车号
      */
-    private String username;
+    private String trainNumber;
 
     /**
-     * 列车id
+     * 乘车人姓名
      */
-    private Long trainId;
+    private String passengerName;
 
     /**
-     * 车厢号
+     * 乘车人身份证号
      */
-    private String carriageNumber;
+    private String idCard;
 
     /**
-     * 座位号
+     * 车票优惠类型
      */
-    private String seatNumber;
+    private Integer discountType;
 
     /**
-     * 乘车人 ID
+     * 车票价格
      */
-    private String passengerId;
+    private Integer ticketPrice;
 
     /**
      * 车票状态
@@ -48,8 +48,32 @@ public class Ticket extends BaseEntity {
     private Integer ticketStatus;
 
     /**
-     * 相关订单
+     * 关联乘车人 ID
+     */
+    private String passengerId;
+
+    /**
+     * 关联坐席ID
+     */
+    private Integer seat_id;
+
+    /**
+     * 关联订单号
      */
     private String orderSn;
 
+    /**
+     *  创建时间
+     */
+    private Date createTime;
+
+    /**
+     *  修改时间
+     */
+    private Date updateTime;
+
+    /**
+     * 删除标识
+     */
+    private Integer delFlag;
 }

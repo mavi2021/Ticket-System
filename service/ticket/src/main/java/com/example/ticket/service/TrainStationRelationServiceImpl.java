@@ -9,13 +9,10 @@ import com.example.ticket.entity.TrainStationRelation;
 import com.example.ticket.mapper.TrainStationRelationMapper;
 import org.springframework.stereotype.Service;
 
-/**
- * @create 2023/10/27 20:37
- */
 @Service
 public class TrainStationRelationServiceImpl extends ServiceImpl<TrainStationRelationMapper, TrainStationRelation> implements TrainStationRelationService{
     @Override
-    public TrainStationRelationRespDTO queryTrainStatinRelation(Long trainId, String departure, String arrival) {
+    public TrainStationRelationRespDTO queryTrainStatinRelation(String trainId, String departure, String arrival) {
         LambdaQueryWrapper<TrainStationRelation> stationRelationLambdaQueryWrapper = Wrappers.lambdaQuery(TrainStationRelation.class)
                 .eq(TrainStationRelation::getTrainId, trainId)
                 .eq(TrainStationRelation::getDeparture, departure)

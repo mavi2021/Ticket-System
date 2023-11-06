@@ -32,9 +32,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
-/**
- * @create 2023/7/11 10:40
- */
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
@@ -91,7 +88,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         List<OrderItem> orderItemList = BeanUtil.copyToList(ticketOrderItemList, OrderItem.class);
         ArrayList<OrderItemPassenger> orderItemPassengerList = new ArrayList<>();
         orderItemList.forEach(each->{
-            each.setTrainId(requestParam.getTrainId());
+            each.setTrainId(Long.valueOf(requestParam.getTrainId()));
             each.setOrderSn(orderSn);
             each.setUserId(String.valueOf(requestParam.getUserId()));
             each.setUsername(requestParam.getUsername());

@@ -22,8 +22,6 @@ import lombok.Data;
 
 /**
  * 车票订单详情创建请求参数
- *
- * @公众号：马丁玩编程，回复：加群，添加马哥微信（备注：12306）获取项目资料
  */
 @Data
 @Builder
@@ -75,7 +73,7 @@ public class TicketOrderItemCreateReqDTO {
     private Integer price;
 
     /**
-     * 车票类型
+     * 车票优惠类型
      */
-    private Integer ticketType;
+    private Integer discountType;
 }
