@@ -1,11 +1,9 @@
 package com.example.ticket.service;
 
-import com.example.ticket.dto.resp.StationQueryRespDTO;
 import com.example.ticket.dto.resp.TrainStationQueryRespDTO;
 import com.example.ticket.entity.Route;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,7 +15,7 @@ import java.util.List;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class TranstationServiceTest {
+public class TrainStationServiceTest {
 
     @Resource
     private TrainStationService trainStationService;
