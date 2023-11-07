@@ -1,6 +1,7 @@
 package com.example.ticket.service;
 
 import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
+import com.example.ticket.dto.resp.SeatTypeCountRespDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,12 @@ public class SeatServiceTest {
                 .build();
         List<TrainPurchaseTicketRespDTO> purchaseTicketRespDTOS = Arrays.asList(build1, build2);
         seatService.unlock("3", "德州", "南京", purchaseTicketRespDTOS);
+    }
+
+    @Test
+    public void listSeatTypeCount(){
+        List<SeatTypeCountRespDTO> seatTypeCountRespDTOS = seatService.listSeatTypeCount("3", "北京", "德州");
+        System.out.println(seatTypeCountRespDTOS);
     }
 
 }

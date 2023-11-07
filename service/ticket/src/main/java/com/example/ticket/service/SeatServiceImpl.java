@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.ticket.common.enums.SeatStatusEnum;
 import com.example.ticket.common.enums.VehicleSeatRelationEnum;
 import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
+import com.example.ticket.dto.resp.SeatTypeCountRespDTO;
 import com.example.ticket.entity.Route;
 import com.example.ticket.entity.Seat;
 import com.example.ticket.entity.Train;
@@ -89,6 +90,24 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
     }
 
     @Override
+    public List<SeatTypeCountRespDTO> listSeatTypeCount(String trainId, String departure, String arrival) {
+        LambdaQueryWrapper<Seat> seatLambdaQueryWrapper = Wrappers.lambdaQuery(Seat.class)
+                .eq(Seat::getTrainId, trainId)
+                .eq(Seat::getDeparture, departure)
+                .eq(Seat::getArrival, arrival)
+                .groupBy(Seat::getSeatType)
+                .select(Seat::getSeatType, Seat::getGroupCount);
+        List<Map<String, Object>> seatCountMap = baseMapper.selectMaps(seatLambdaQueryWrapper);
+        return seatCountMap.stream().map(each->{
+            Integer seatType = (Integer) each.get("seat_type");
+            Integer groupCount = Integer.valueOf(each.get("groupCount").toString()) ;
+            return SeatTypeCountRespDTO.builder()
+                    .seatType(seatType)
+                    .seatCount(groupCount).build();
+        }).collect(Collectors.toList());
+    }
+
+    @Override
     public  List<Integer> selectRemainingSeats(String trainId, String startStation, String endStation, List<String> trainCarriageList) {
         LambdaQueryWrapper<Seat> remainingSeatsCountWrapper = Wrappers.lambdaQuery(Seat.class)
                 .eq(Seat::getTrainId, trainId)
@@ -97,10 +116,9 @@ public class SeatServiceImpl extends ServiceImpl<SeatMapper, Seat> implements Se
                 .eq(Seat::getSeatStatus, SeatStatusEnum.AVAILABLE.getCode())
                 .in(Seat::getCarriageNumber, trainCarriageList)
                 .groupBy(Seat::getCarriageNumber)
-                .select(Seat::getCarriageNumber, Seat::getCarriageGroupCount);
+                .select(Seat::getCarriageNumber, Seat::getGroupCount);
         List<Seat> remainingSeats = baseMapper.selectList(remainingSeatsCountWrapper);
-        System.out.println(remainingSeats);
-        return remainingSeats.stream().map(Seat::getCarriageGroupCount).collect(Collectors.toList());
+        return remainingSeats.stream().map(Seat::getGroupCount).collect(Collectors.toList());
     }
 
     @Override

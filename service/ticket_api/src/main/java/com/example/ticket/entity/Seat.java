@@ -44,11 +44,13 @@ public class Seat extends BaseEntity {
     /**
      * 起始站
      */
+    @TableField(value = "start_station")
     private String departure;
 
     /**
      * 终点站
      */
+    @TableField(value = "end_station")
     private String arrival;
 
     /**
@@ -64,7 +66,7 @@ public class Seat extends BaseEntity {
     /**
      * 坐席按车厢分组数量
      */
-    @TableField(value = "count(*)", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER, select = false)
-    private Integer CarriageGroupCount;
+    @TableField(value = "count(1)", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER, select = false)
+    private Integer groupCount;
 
 }

@@ -2,7 +2,9 @@ package com.example.ticket.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.ticket.dto.req.TrainPurchaseTicketRespDTO;
+import com.example.ticket.dto.resp.SeatTypeCountRespDTO;
 import com.example.ticket.entity.Seat;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -71,15 +73,20 @@ public interface SeatService extends IService<Seat> {
     List<String> listUsableCarriages(String trainId, Integer seatType, String startStation, String endStation);
 
 
-
     /**
-     * 锁定选中以及沿途车票状态
-     *
-     * @param trainId                     列车 ID
-     * @param departure                   出发站
-     * @param arrival                     到达站
-     * @param trainPurchaseTicketRespList 乘车人以及座位信息
+     * 获取列车 起点站 到 终点站 区间可用座位集合
      */
+    List<SeatTypeCountRespDTO> listSeatTypeCount(String trainId, String departure, String arrival);
+
+
+        /**
+         * 锁定选中以及沿途车票状态
+         *
+         * @param trainId                     列车 ID
+         * @param departure                   出发站
+         * @param arrival                     到达站
+         * @param trainPurchaseTicketRespList 乘车人以及座位信息
+         */
     void lockSeat(String trainId, String departure, String arrival, List<TrainPurchaseTicketRespDTO> trainPurchaseTicketRespList);
 
     /**
