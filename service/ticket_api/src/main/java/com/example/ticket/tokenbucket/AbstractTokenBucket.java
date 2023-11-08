@@ -5,6 +5,6 @@ package com.example.ticket.tokenbucket;
  */
 public interface AbstractTokenBucket<T>{
 
-    public boolean takeTokenFromBucket(T requestParam);
+    boolean takeTokenFromBucket(T requestParam);
 
 }
