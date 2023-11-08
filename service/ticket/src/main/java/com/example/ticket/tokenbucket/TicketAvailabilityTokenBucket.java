@@ -12,6 +12,7 @@ import com.example.ticket.entity.Train;
 import com.example.ticket.service.SeatService;
 import com.example.ticket.service.TrainService;
 import com.example.ticket.service.TrainStationService;
+import io.lettuce.core.ScriptOutputType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -42,8 +43,7 @@ public class TicketAvailabilityTokenBucket implements AbstractTokenBucket<Purcha
     private TrainService trainService;
 
     @Resource
-    private RedisTemplate redisTemplate;
-//    @Deprecated
+
     @Override
     public boolean takeTokenFromBucket(PurchaseTicketReqDTO requestParam) {
         String key = TICKET_AVAILABILITY_TOKEN_BUCKET + requestParam.getTrainId();
@@ -63,6 +63,7 @@ public class TicketAvailabilityTokenBucket implements AbstractTokenBucket<Purcha
 
         DefaultRedisScript<Long> longDefaultRedisScript = new DefaultRedisScript<>();
         longDefaultRedisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(LUA_TICKET_AVAILABILITY_TOKEN_BUCKET_PATH)));
+        longDefaultRedisScript.setResultType(Long.class);
 
         Map<Integer, Long> seatTypeMap = requestParam.getPassengers().stream()
                 .collect(Collectors.groupingBy(PurchaseTicketPassengerDetailDTO::getSeatType, Collectors.counting()));
@@ -75,10 +76,8 @@ public class TicketAvailabilityTokenBucket implements AbstractTokenBucket<Purcha
 
         List<Route> routeList = trainStationService.listTakeoutTrainStationRoute(requestParam.getTrainId(), requestParam.getDeparture(), requestParam.getArrival());
 
-        Object execute = redisTemplate.execute(longDefaultRedisScript, ListUtil.of(key, requestParam.getDeparture(), requestParam.getArrival()), JSONUtil.toJsonStr(jsonArray), JSONUtil.toJsonStr(routeList));
-        System.out.println(execute);
-        return false;
-//        return Objects.equals(result, 1L);
+        Long result = stringRedisTemplate.execute(longDefaultRedisScript, ListUtil.of(key, requestParam.getDeparture(), requestParam.getArrival()), JSONUtil.toJsonStr(jsonArray), JSONUtil.toJsonStr(routeList));
+        return Objects.equals(result, 1L);
 
     }
 }
