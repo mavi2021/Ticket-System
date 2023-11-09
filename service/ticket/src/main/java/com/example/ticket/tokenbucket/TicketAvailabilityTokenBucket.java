@@ -12,9 +12,7 @@ import com.example.ticket.entity.Train;
 import com.example.ticket.service.SeatService;
 import com.example.ticket.service.TrainService;
 import com.example.ticket.service.TrainStationService;
-import io.lettuce.core.ScriptOutputType;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
@@ -41,8 +39,6 @@ public class TicketAvailabilityTokenBucket implements AbstractTokenBucket<Purcha
 
     @Resource
     private TrainService trainService;
-
-    @Resource
 
     @Override
     public boolean takeTokenFromBucket(PurchaseTicketReqDTO requestParam) {

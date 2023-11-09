@@ -20,6 +20,7 @@ package com.example.ticket.dto.req;
 import com.example.ticket.dto.domain.PurchaseTicketPassengerDetailDTO;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
