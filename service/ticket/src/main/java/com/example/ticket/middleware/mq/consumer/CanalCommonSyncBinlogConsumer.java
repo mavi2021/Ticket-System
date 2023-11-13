@@ -1,7 +1,7 @@
 package com.example.ticket.middleware.mq.consumer;
 
 import com.example.ticket.common.constant.RocketMQConstant;
-import com.example.ticket.dto.event.CanalBinlogEvent;
+import com.example.ticket.dto.mq.event.CanalBinlogEvent;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.stereotype.Component;
