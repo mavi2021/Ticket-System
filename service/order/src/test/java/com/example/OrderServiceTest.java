@@ -8,7 +8,7 @@ import com.example.order.dto.resp.TicketOrderDetailSelfRespDTO;
 import com.example.order.entity.OrderItemPassenger;
 import com.example.order.enums.OrderItemStatusEnum;
 import com.example.order.enums.OrderStatusEnum;
-import com.example.order.mq.event.PayResultCallbackOrderEvent;
+import com.example.order.mq.PayResultCallbackOrderEvent;
 import com.example.order.service.OrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

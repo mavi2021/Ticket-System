@@ -14,7 +14,7 @@ spring:
         file-extension: yml
         sharedDataids: common2.yml
         refreshable-dataids: common2.yml
-  main:
+  main: 
     allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

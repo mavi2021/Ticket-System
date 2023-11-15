@@ -21,7 +21,7 @@ import com.example.order.dto.resp.TicketOrderDetailSelfRespDTO;
 import com.example.order.dto.resp.TicketOrderPassengerDetailRespDTO;
 import com.example.order.entity.Order;
 import com.example.order.entity.OrderItem;
-import com.example.order.mq.event.PayResultCallbackOrderEvent;
+import com.example.order.mq.PayResultCallbackOrderEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

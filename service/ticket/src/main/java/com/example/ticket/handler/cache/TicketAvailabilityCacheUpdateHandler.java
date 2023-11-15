@@ -1,6 +1,6 @@
 package com.example.ticket.handler.cache;
 
-import com.example.ticket.dto.mq.event.CanalBinlogEvent;
+import com.example.ticket.dto.mq.CanalBinlogEvent;
 import org.springframework.stereotype.Component;
 
 /**

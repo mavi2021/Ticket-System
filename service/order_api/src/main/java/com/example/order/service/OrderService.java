@@ -9,7 +9,7 @@ import com.example.order.dto.req.TicketOrderPageQueryReqDTO;
 import com.example.order.dto.resp.PageResponse;
 import com.example.order.dto.resp.TicketOrderDetailSelfRespDTO;
 import com.example.order.entity.OrderItemPassenger;
-import com.example.order.mq.event.PayResultCallbackOrderEvent;
+import com.example.order.mq.PayResultCallbackOrderEvent;
 
 /**
  * @create 2023/7/11 10:28

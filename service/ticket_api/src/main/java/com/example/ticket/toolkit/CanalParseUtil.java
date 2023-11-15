@@ -1,6 +1,6 @@
 package com.example.ticket.toolkit;
 
-import com.example.ticket.dto.mq.event.CanalBinlogEvent;
+import com.example.ticket.dto.mq.CanalBinlogEvent;
 
 /**
  * @date 2023/11/15 22:14

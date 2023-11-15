@@ -1,4 +1,4 @@
-package com.example.ticket.dto.mq.event;
+package com.example.ticket.dto.mq;
 
 import lombok.Builder;
 import lombok.Data;
