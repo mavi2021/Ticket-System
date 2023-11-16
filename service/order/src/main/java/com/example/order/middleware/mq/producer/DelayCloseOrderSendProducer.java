@@ -1,9 +1,12 @@
 package com.example.order.middleware.mq.producer;
 
+import com.example.order.common.constant.OrderRocketMQConstant;
 import com.example.order.mq.dto.BaseSendExtendDTO;
 import com.example.order.mq.dto.DelayCloseOrderEventDTO;
 import com.example.order.mq.producer.AbstractCommonSendProduceProducer;
-import com.mysql.cj.MessageBuilder;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -14,15 +17,18 @@ public class DelayCloseOrderSendProducer implements AbstractCommonSendProducePro
         @Resource
         private RocketMQTemplate rocketMQTemplate;
 
+        @Deprecated
+        @Override
         public void sendMessage(DelayCloseOrderEventDTO messageSendEvent){
             BaseSendExtendDTO baseSendExtendDTO = buildBaseSendExtendParam(messageSendEvent);
-            Message<DelayCloseOrderEvent> message = MessageBuilder.withPayload(messageSendEvent).build();
+            Message<DelayCloseOrderEventDTO> message = MessageBuilder.withPayload(messageSendEvent).build();
             rocketMQTemplate.syncSend(baseSendExtendDTO.getTopic()+":"+baseSendExtendDTO.getTag(),
                     message,
                     baseSendExtendDTO.getSentTimeout(),
                     baseSendExtendDTO.getDelayLevel());
         }
 
+        @Deprecated
         @Override
         public BaseSendExtendDTO buildBaseSendExtendParam(DelayCloseOrderEventDTO messageSendEvent) {
             return BaseSendExtendDTO.builder()
