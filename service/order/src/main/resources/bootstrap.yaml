@@ -15,8 +15,10 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.137.18.250:3306/12306?serverTimezone=Asia/Shanghai&useSSL=false
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://8.137.18.250:3306/12306?serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:shardingsphere-config.yaml
     username: root
     password: 123456
 

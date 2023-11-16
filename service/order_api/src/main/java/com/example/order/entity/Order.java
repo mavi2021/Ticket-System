@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Data
 @Builder
-@TableName("t_order_0")
+@TableName("t_order")
 public class Order extends BaseEntity {
 
     /**

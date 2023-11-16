@@ -22,10 +22,11 @@ public class DelayCloseOrderConsumer implements RocketMQListener<DelayCloseOrder
     @Reference(version = "1.0.O", check = false)
     private TicketService ticketService;
 
+    @Deprecated
     @Override
     public void onMessage(DelayCloseOrderEventDTO message) {
         CancelTicketOrderReqDTO cancelTicketOrderReqDTO = CancelTicketOrderReqDTO.builder()
-                .build();
+                .orderSn(message.getOrderSn()).build();
         ticketService.cancelTicketOrder(cancelTicketOrderReqDTO);
     }
 }
